@@ -86,7 +86,7 @@ export default {
 
     async getPortfolioData() {
       try {
-        this.portfolios = await api.get("/api/portfolios/");
+        this.portfolios = await api.get(`${process.env.VUE_API_BASE_URL}/portfolios/`);
         localStorageManager.set(PORTFOLIO_DATA, this.portfolios);
       } catch (error) {
         localStorageManager.delete(PORTFOLIO_DATA);

@@ -245,12 +245,12 @@ export default {
         if (this.userDashboardId) {
           console.log("update");
           // update
-          dashboard = await api.put(`/api/dashboard/${this.userDashboardId}`, {
+          dashboard = await api.put(`${process.env.VUE_API_BASE_URL}/dashboard/${this.userDashboardId}`, {
             layout: this.currentLayoutObj,
           });
         } else {
           console.log("create");
-          dashboard = await api.post("/api/dashboard/", {
+          dashboard = await api.post(`${process.env.VUE_API_BASE_URL}/dashboard/`, {
             layout: this.currentLayoutObj,
           });
           this.userDashboardId = dashboard.uid;
@@ -273,7 +273,7 @@ export default {
       try {
         dashboard = localStorageManager.get("layoutData");
         if (!dashboard) {
-          dashboard = await api.get("/api/dashboard/");
+          dashboard = await api.get(`${process.env.VUE_API_BASE_URL}/dashboard/`);
           this.userDashboardId = dashboard.uid;
           return dashboard.content.layout;
         }

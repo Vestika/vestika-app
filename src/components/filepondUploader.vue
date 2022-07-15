@@ -63,7 +63,7 @@ export default {
       console.log(file);
       let res;
       try {
-        res = await api.post("/api/users/uploadfile/", formData, {
+        res = await api.post(`${process.env.VUE_API_BASE_URL}/users/uploadfile/`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
