@@ -1,0 +1,59 @@
+import { store } from "@/store";
+import { FireSignout, FireGetUser } from "@/utils/firebase";
+import router from "../../router/index";
+
+const localStorageManager = require("../../utils/localStorage");
+
+export default {
+  mounted() {
+    this.InitUserName();
+  },
+  data() {
+    return {
+      items: [
+        { title: "Portfolio", link: "/" },
+        // { title: "Feed", link: "/feed" },
+        // { title: "Dividends", link: "/dividends" },
+        // { title: "Expenses", link: "/expenses" },
+        // { title: "Calculators", link: "/calculators" },
+      ],
+      storeState: store.state,
+      username: undefined,
+      userOptions: {
+        settings: {
+          icon: "mdi-cog",
+          fn() {
+            console.log("Nothing to happen yet");
+          },
+        },
+        signout: {
+          icon: "mdi-logout",
+          async fn() {
+            try {
+              await FireSignout();
+              localStorageManager.clear();
+            } catch (error) {
+              alert(error);
+              return;
+            }
+            store.clearAnonymousState();
+            await router.push("/registration");
+          },
+        },
+      },
+    };
+  },
+
+  methods: {
+    changeRoute() {
+      this.$router.go("/");
+    },
+    changeUserToPermanent() {
+      store.setAnonymousState(false);
+    },
+    async InitUserName() {
+      const user = await FireGetUser();
+      this.username = user.email.split("@")[0];
+    },
+  },
+};

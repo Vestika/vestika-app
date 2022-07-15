@@ -1,0 +1,64 @@
+<v-navigation-drawer
+        id="side-bar"
+        app
+        class="pa-0"
+>
+    <div id="side-bar-title">Vestika</div>
+    <v-layout column>
+        <v-list>
+            <v-divider></v-divider>
+            <div v-for="item in items">
+                <v-list-item
+                        :key="item.title"
+                        :to="item.link"
+                        link
+                >
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-divider></v-divider>
+            </div>
+        </v-list>
+
+      <div align="center" style="bottom: 40px; position: fixed; width: 100% ">
+
+      <v-menu>
+        <template #activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-list-item-avatar size="60px" class="ma-0" style="box-shadow: var(--v-mainTheme-base) 0px 4px 1px">
+              <v-img src="https://randomuser.me/api/portraits/men/85.jpg" />
+            </v-list-item-avatar>
+          </v-btn>
+<!--          <div v-if="storeState.isAnonymous" class="mr-4">-->
+<!--            <div class="font-weight-light text-center" style="font-size: 12px">-->
+<!--              Enjoying Vestika?-->
+<!--            </div>-->
+<!--            <div class="text-center">-->
+<!--              <v-btn x-small @click="openSignUpForm">-->
+<!--                SignUp-->
+<!--              </v-btn>-->
+<!--            </div>-->
+<!--          </div>-->
+        </template>
+        <v-list>
+          <v-subheader>signed in as {{ username }}</v-subheader>
+          <v-list-item
+            v-for="(value, key) in userOptions"
+            :key="key"
+            @click="value.fn"
+
+          >
+            <v-list-item-icon class="mr-0" >
+              <v-icon size="20" >{{ value.icon }}</v-icon>
+            </v-list-item-icon >
+            <v-list-item-content style="height: 0%" class="mt-0">
+              <v-list-item-title style="font-size: 14px">{{ key }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      </div>
+
+    </v-layout>
+</v-navigation-drawer>

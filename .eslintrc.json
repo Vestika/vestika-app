@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "mocha": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:vue/essential",
+        "eslint:recommended"
+    ],
+    "plugins": [
+        "vue"
+    ],
+    "rules": {
+        "no-unused-vars": "warn",
+        "no-console": "off",
+        "func-names": "off",
+        "import/prefer-default-export": "off",
+        "no-process-exit": "off",
+        "object-shorthand": "off",
+        "class-methods-use-this": "off",
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "no-shadow": "off",
+        "operator-linebreak": ["error", "before"],
+        "comma-dangle": ["error", {
+            "arrays": "always-multiline",
+            "objects": "always-multiline",
+            "imports": "always-multiline",
+            "exports": "always-multiline",
+            "functions": "always-multiline"
+        }]
+    }
+}

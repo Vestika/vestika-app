@@ -1,0 +1,13 @@
+{
+  "messages":{
+    "verify": {
+      "title": "A verification link has been sent to your email account",
+      "message": "Please click on the link that has just been sent to your email account to verify your email and continue the registration."
+    } ,
+    "resetPassword": {
+      "title": "A password reset link has been sent to your email account",
+      "message": "Please click on the link that has just been sent to your email account to reset your password."
+    }
+  }
+}
+
