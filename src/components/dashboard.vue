@@ -245,14 +245,20 @@ export default {
         if (this.userDashboardId) {
           console.log("update");
           // update
-          dashboard = await api.put(`${process.env.VUE_API_BASE_URL}/dashboard/${this.userDashboardId}`, {
-            layout: this.currentLayoutObj,
-          });
+          dashboard = await api.put(
+            `${process.env.VUE_APP_BASE_URL}/dashboard/${this.userDashboardId}`,
+            {
+              layout: this.currentLayoutObj,
+            },
+          );
         } else {
           console.log("create");
-          dashboard = await api.post(`${process.env.VUE_API_BASE_URL}/dashboard/`, {
-            layout: this.currentLayoutObj,
-          });
+          dashboard = await api.post(
+            `${process.env.VUE_APP_BASE_URL}/dashboard/`,
+            {
+              layout: this.currentLayoutObj,
+            },
+          );
           this.userDashboardId = dashboard.uid;
         }
       } catch (error) {
@@ -273,7 +279,9 @@ export default {
       try {
         dashboard = localStorageManager.get("layoutData");
         if (!dashboard) {
-          dashboard = await api.get(`${process.env.VUE_API_BASE_URL}/dashboard/`);
+          dashboard = await api.get(
+            `${process.env.VUE_APP_BASE_URL}/dashboard/`,
+          );
           this.userDashboardId = dashboard.uid;
           return dashboard.content.layout;
         }
