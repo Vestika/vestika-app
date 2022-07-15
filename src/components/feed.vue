@@ -83,7 +83,7 @@ export default {
         this.loading = true;
         await api
           .post(
-            "/api/feed/",
+            `${process.env.VUE_API_BASE_URL}/feed/`,
             {
               message: this.message,
             },
@@ -106,7 +106,7 @@ export default {
     async update() {},
     async infiniteHandler($state) {
       api
-        .get("/api/feed/scroll", {
+        .get(`${process.env.VUE_API_BASE_URL}/feed/scroll`, {
           params: {
             last_id: this.last_id,
           },

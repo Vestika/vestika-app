@@ -28,7 +28,7 @@ export default {
       const idToken = await FireGetToken();
       let goalsResponse;
       try {
-        goalsResponse = await axios.get("/api/goals/", {
+        goalsResponse = await axios.get(`${process.env.VUE_API_BASE_URL}/goals/`, {
           headers: { Authorization: `Bearer ${idToken}` },
         });
       } catch (error) {
@@ -44,7 +44,7 @@ export default {
     async fetchGoalTypes() {
       const idToken = await FireGetToken();
       try {
-        this.goalTypes = await axios.get("/api/goals/goal_types", {
+        this.goalTypes = await axios.get(`${process.env.VUE_API_BASE_URL}/goals/goal_types`, {
           headers: { Authorization: `Bearer ${idToken}` },
         });
       } catch (error) {
@@ -119,7 +119,7 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await axios.post("/api/goal/", goalData, {
+        res = await axios.post(`${process.env.VUE_API_BASE_URL}/goal/`, goalData, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${idToken}`,
@@ -134,7 +134,7 @@ export default {
       const idToken = await FireGetToken();
       let res;
       try {
-        res = await axios.post("/api/goals/update_values", null, {
+        res = await axios.post(`${process.env.VUE_API_BASE_URL}/goals/update_values`, null, {
           headers: {
             Authorization: `Bearer ${idToken}`,
           },
@@ -149,7 +149,7 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await axios.put(`/api/goal/`, goalData, {
+        res = await axios.put(`${process.env.VUE_API_BASE_URL}/goal/`, goalData, {
           params: { goal_definition_id: goal.goalDefinitionId },
           headers: {
             "Content-Type": "application/json",
