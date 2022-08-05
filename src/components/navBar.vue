@@ -47,6 +47,7 @@
 <script>
 import { store } from "../store.js";
 import { FireSignout } from "../utils/firebase";
+import { FireGetToken } from "@/utils/firebase";
 import router from "../router/index";
 
 const localStorageManager = require("../utils/localStorage");
@@ -67,6 +68,28 @@ export default {
           fn() {
             console.log("Nothing to happen yet");
           },
+        },
+        "Delete Data": {
+          icon: "mdi-delete",
+          fn() {
+            const idToken = await FireGetToken();
+
+            if (confirm("You are about to delete all of your data")) {
+              axios.delete(
+                `${process.env.VUE_APP_BASE_URL}/dashboard`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
+                }
+              )
+              .then(resp => {
+                console.log("delete OK")
+              })
+              .catch(error => {
+                console.log(error);
+              })
+            }
         },
         signout: {
           icon: "mdi-logout",
