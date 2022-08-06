@@ -76,40 +76,38 @@ export default {
             const idToken = await FireGetToken();
 
             if (confirm("You are about to delete all of your data")) {
-              axios.delete(
-                  `${process.env.VUE_APP_BASE_URL}/dashboard`,
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${idToken}`,
-                    },
+              axios
+                .delete(`${process.env.VUE_APP_BASE_URL}/dashboard`, {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
                   },
-              )
-                  .then(resp => {
-                    console.log(resp?.status);
-                    console.log("delete OK")
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  })
+                })
+                .then(resp => {
+                  console.log(resp?.status);
+                  console.log("delete OK");
+                })
+                .catch(error => {
+                  console.log(error);
+                });
             }
           },
-          },
-          signout: {
-            icon: "mdi-logout",
-            async fn() {
-              try {
-                await FireSignout();
-                localStorageManager.clear();
-              } catch (error) {
-                alert(error);
-                return;
-              }
-              store.clearAnonymousState();
-              await router.push("/registration");
-            },
+        },
+        signout: {
+          icon: "mdi-logout",
+          async fn() {
+            try {
+              await FireSignout();
+              localStorageManager.clear();
+            } catch (error) {
+              alert(error);
+              return;
+            }
+            store.clearAnonymousState();
+            await router.push("/registration");
           },
         },
+      },
     };
   },
   methods: {
