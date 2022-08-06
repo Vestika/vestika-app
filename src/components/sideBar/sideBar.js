@@ -1,5 +1,6 @@
+import axios from "axios";
 import { store } from "@/store";
-import { FireSignout, FireGetUser } from "@/utils/firebase";
+import { FireSignout, FireGetUser, FireGetToken } from "@/utils/firebase";
 import router from "../../router/index";
 
 const localStorageManager = require("../../utils/localStorage");
@@ -24,6 +25,29 @@ export default {
           icon: "mdi-cog",
           fn() {
             console.log("Nothing to happen yet");
+          },
+        },
+        "Delete Data": {
+          icon: "mdi-delete",
+          async fn() {
+            const idToken = await FireGetToken();
+
+            if (confirm("You are about to delete all of your data")) {
+              axios
+                .delete(`${process.env.VUE_APP_BASE_URL}/dashboard`, {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${idToken}`,
+                  },
+                })
+                .then(resp => {
+                  console.log(resp?.status);
+                  console.log("delete OK");
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
           },
         },
         signout: {
