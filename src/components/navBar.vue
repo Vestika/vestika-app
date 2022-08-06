@@ -71,7 +71,7 @@ export default {
         },
         "Delete Data": {
           icon: "mdi-delete",
-          fn() {
+          async fn() {
             const idToken = await FireGetToken();
 
             if (confirm("You are about to delete all of your data")) {
