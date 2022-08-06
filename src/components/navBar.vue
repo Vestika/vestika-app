@@ -94,6 +94,7 @@ export default {
                   })
             }
           },
+          },
           signout: {
             icon: "mdi-logout",
             async fn() {
@@ -109,7 +110,6 @@ export default {
             },
           },
         },
-      },
     };
   },
   methods: {
