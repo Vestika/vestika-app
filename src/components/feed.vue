@@ -81,9 +81,8 @@ export default {
     async tweet() {
       try {
         this.loading = true;
-        await api
-          .post(
-            `${process.env.VUE_APP_BASE_URL}/feed/`,
+        await api.post(
+            "/feed",
             {
               message: this.message,
             },

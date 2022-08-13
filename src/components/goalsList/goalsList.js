@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
-import axios from "axios";
+import api from "@/utils/api";
 import { FireGetToken } from "@/utils/firebase";
 
 Vue.use(Vuetify);
@@ -28,7 +28,7 @@ export default {
       const idToken = await FireGetToken();
       let goalsResponse;
       try {
-        goalsResponse = await axios.get(
+        goalsResponse = await api.get(
           `${process.env.VUE_APP_BASE_URL}/goals/`,
           {
             headers: { Authorization: `Bearer ${idToken}` },
@@ -47,8 +47,8 @@ export default {
     async fetchGoalTypes() {
       const idToken = await FireGetToken();
       try {
-        this.goalTypes = await axios.get(
-          `${process.env.VUE_APP_BASE_URL}/goals/goal_types`,
+        this.goalTypes = await api.get(
+          "/goals/goal_types",
           {
             headers: { Authorization: `Bearer ${idToken}` },
           },
@@ -125,8 +125,8 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await axios.post(
-          `${process.env.VUE_APP_BASE_URL}/goal/`,
+        res = await api.post(
+          "/goal",
           goalData,
           {
             headers: {
@@ -144,8 +144,8 @@ export default {
       const idToken = await FireGetToken();
       let res;
       try {
-        res = await axios.post(
-          `${process.env.VUE_APP_BASE_URL}/goals/update_values`,
+        res = await api.post(
+          "/goals/update_values",
           null,
           {
             headers: {
@@ -163,8 +163,8 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await axios.put(
-          `${process.env.VUE_APP_BASE_URL}/goal/`,
+        res = await api.put(
+          "/goal",
           goalData,
           {
             params: { goal_definition_id: goal.goalDefinitionId },

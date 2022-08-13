@@ -56,22 +56,29 @@ export default {
   methods: {
     async createWebSocket() {
       const user = await FireGetUser();
-      const user_id = user.uid;
+
+      var ws_url = process.env.VUE_APP_WS_URL + user.uid
+      console.log("Creating WebSocket on: %s", ws_url)
+
       try {
-        var ws = new WebSocket(process.env.VUE_APP_WS_URL + user_id);
-        console.log("Web socket created");
-        const self = this;
-        ws.onmessage = async function(event) {
-          console.log("NEW MESSAGE FROM WS");
-          self.portfolios = JSON.parse(event.data);
-          self.isLoading = false;
-          self.$emit("on-loading", self.isLoading);
-          localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
-          console.log("SAVED TO LOCAL STORAGE");
-        };
+        var ws = new WebSocket(ws_url);
+        console.log("WebSocket connected successfully.");
       } catch (error) {
-        console.log(error);
+        console.log("WebSocket creation failed:", error);
+        return;
       }
+
+      console.log("Registering message handler for WebSocket.");
+      const self = this;
+      ws.onmessage = async function(event) {
+        console.log("WebSocket: Received:", event);
+        self.portfolios = JSON.parse(event.data);
+        self.isLoading = false;
+        self.$emit("on-loading", self.isLoading);
+        
+        localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
+        console.log("Portfolio data saved to LocalStorage.");
+      };
     },
 
     finalizeDataFetch() {
@@ -86,9 +93,7 @@ export default {
 
     async getPortfolioData() {
       try {
-        this.portfolios = await api.get(
-          `${process.env.VUE_APP_BASE_URL}/portfolios/`,
-        );
+        this.portfolios = await api.get("/portfolios");
         localStorageManager.set(PORTFOLIO_DATA, this.portfolios);
       } catch (error) {
         localStorageManager.delete(PORTFOLIO_DATA);
