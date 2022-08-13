@@ -102,14 +102,13 @@ export async function FireHandleRememberMe(isRememberMeChecked) {
   try {
     if (!isRememberMeChecked) {
       await auth.setPersistence(persistence.SESSION);
-      console.log("when the window is closed, the session is cleared.");
+      console.log("Login: OK, clear session when window is closed.");
     } else {
       await auth.setPersistence(persistence.LOCAL);
-      console.log("when the window is closed, the session is not cleared.");
+      console.log("Login: OK, keep session even when window is closed.");
     }
   } catch (error) {
-    console.error("Firebase error:");
-    console.error(error);
+    console.error("Login: Failed.", error);
     throw error;
   }
 }

@@ -64,7 +64,7 @@ export default {
       let res;
       try {
         res = await api.post(
-          `${process.env.VUE_APP_BASE_URL}/users/uploadfile/`,
+          "/users/uploadfile",
           formData,
           {
             headers: {

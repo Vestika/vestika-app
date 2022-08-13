@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import { store } from "../store.js";
 import { FireSignout } from "../utils/firebase";
 import { FireGetToken } from "@/utils/firebase";
 import router from "../router/index";
+import api from "@/utils/api";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -76,8 +76,9 @@ export default {
             const idToken = await FireGetToken();
 
             if (confirm("You are about to delete all of your data")) {
-              axios
-                .delete(`${process.env.VUE_APP_BASE_URL}/dashboard`, {
+              api.delete(
+                "/dashboard",
+                {
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${idToken}`,

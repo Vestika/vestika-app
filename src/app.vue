@@ -73,8 +73,7 @@ export default {
       }
     },
     changeLoadingStatus(loadingStatus) {
-      console.log("CHANGE LOG STATUS");
-      console.log(loadingStatus);
+      console.log("Change \"loading\" status to:", loadingStatus);
       this.isLoading = loadingStatus;
     },
     hide_alert() {
