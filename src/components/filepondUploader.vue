@@ -63,15 +63,11 @@ export default {
       console.log(file);
       let res;
       try {
-        res = await api.post(
-          "/users/uploadfile",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        res = await api.post("/users/uploadfile", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
       } catch (error) {
         console.log(error);
         return false;

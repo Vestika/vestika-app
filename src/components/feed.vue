@@ -81,7 +81,8 @@ export default {
     async tweet() {
       try {
         this.loading = true;
-        await api.post(
+        await api
+          .post(
             "/feed",
             {
               message: this.message,

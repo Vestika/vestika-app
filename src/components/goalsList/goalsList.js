@@ -47,12 +47,9 @@ export default {
     async fetchGoalTypes() {
       const idToken = await FireGetToken();
       try {
-        this.goalTypes = await api.get(
-          "/goals/goal_types",
-          {
-            headers: { Authorization: `Bearer ${idToken}` },
-          },
-        );
+        this.goalTypes = await api.get("/goals/goal_types", {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
       } catch (error) {
         return false;
       }
@@ -125,16 +122,12 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await api.post(
-          "/goal",
-          goalData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${idToken}`,
-            },
+        res = await api.post("/goal", goalData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
           },
-        );
+        });
       } catch (error) {
         return false;
       }
@@ -144,15 +137,11 @@ export default {
       const idToken = await FireGetToken();
       let res;
       try {
-        res = await api.post(
-          "/goals/update_values",
-          null,
-          {
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
+        res = await api.post("/goals/update_values", null, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
           },
-        );
+        });
       } catch (error) {
         return false;
       }
@@ -163,17 +152,13 @@ export default {
       let goalData = this.getGoalData(goal);
       let res;
       try {
-        res = await api.put(
-          "/goal",
-          goalData,
-          {
-            params: { goal_definition_id: goal.goalDefinitionId },
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${idToken}`,
-            },
+        res = await api.put("/goal", goalData, {
+          params: { goal_definition_id: goal.goalDefinitionId },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`,
           },
-        );
+        });
       } catch (error) {
         return false;
       }

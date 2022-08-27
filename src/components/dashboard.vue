@@ -245,20 +245,14 @@ export default {
         if (this.userDashboardId) {
           console.log("update");
           // update
-          dashboard = await api.put(
-            `/dashboard/${this.userDashboardId}`,
-            {
-              layout: this.currentLayoutObj,
-            },
-          );
+          dashboard = await api.put(`/dashboard/${this.userDashboardId}`, {
+            layout: this.currentLayoutObj,
+          });
         } else {
           console.log("create");
-          dashboard = await api.post(
-            "/dashboard",
-            {
-              layout: this.currentLayoutObj,
-            },
-          );
+          dashboard = await api.post("/dashboard", {
+            layout: this.currentLayoutObj,
+          });
           this.userDashboardId = dashboard.uid;
         }
       } catch (error) {

@@ -76,9 +76,8 @@ export default {
             const idToken = await FireGetToken();
 
             if (confirm("You are about to delete all of your data")) {
-              api.delete(
-                "/dashboard",
-                {
+              api
+                .delete("/dashboard", {
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${idToken}`,

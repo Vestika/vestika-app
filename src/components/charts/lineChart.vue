@@ -84,6 +84,15 @@ export default {
                   chart.selectionRect = undefined;
                 }
               });
+              chart.container.onmousedown = function() {
+                chart.mouseDown = true;
+                if (cloneToolTip) {
+                  chart.container.firstChild.removeChild(cloneToolTip);
+                }
+                cloneToolTip = chart.tooltip.label.element.cloneNode(true);
+                chart.container.firstChild.appendChild(cloneToolTip);
+                chart.pointMouseDown = chart.hoverPoint;
+              };
             },
           },
         },
@@ -203,25 +212,6 @@ export default {
                       .translate(-chart.label.width / 2, 0)
                       .toFront();
                   }
-                },
-                // event when holding the mouse on a specific point and dragging
-                mousedown: function() {
-                  if (cloneToolTip) {
-                    this.series.chart.container.firstChild.removeChild(
-                      cloneToolTip,
-                    );
-                  }
-                  cloneToolTip = this.series.chart.tooltip.label.element.cloneNode(
-                    true,
-                  );
-                  this.series.chart.container.firstChild.appendChild(
-                    cloneToolTip,
-                  );
-                  var point = this,
-                    chart = point.series.chart;
-
-                  chart.mouseDown = true;
-                  chart.pointMouseDown = point;
                 },
               },
             },

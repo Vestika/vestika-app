@@ -1,11 +1,9 @@
 import axios from "axios";
 import { FireGetToken } from "@/utils/firebase";
 
-const api = axios.create(
-  {
-    baseURL: process.env.VUE_APP_BASE_URL,
-  },
-);
+const api = axios.create({
+  baseURL: process.env.VUE_APP_BASE_URL,
+});
 
 api.interceptors.request.use(
   async request => {
