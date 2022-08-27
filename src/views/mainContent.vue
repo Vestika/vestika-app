@@ -57,8 +57,8 @@ export default {
     async createWebSocket() {
       const user = await FireGetUser();
 
-      var ws_url = process.env.VUE_APP_WS_URL + user.uid
-      console.log("Creating WebSocket on: %s", ws_url)
+      var ws_url = process.env.VUE_APP_WS_URL + user.uid;
+      console.log("Creating WebSocket on: %s", ws_url);
 
       try {
         var ws = new WebSocket(ws_url);
@@ -75,7 +75,7 @@ export default {
         self.portfolios = JSON.parse(event.data);
         self.isLoading = false;
         self.$emit("on-loading", self.isLoading);
-        
+
         localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
         console.log("Portfolio data saved to LocalStorage.");
       };
