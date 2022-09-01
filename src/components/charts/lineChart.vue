@@ -66,33 +66,54 @@ export default {
           backgroundColor: "transparent",
           events: {
             // event when mouse is released
-            load: function() {
-              var chart = this;
-              chart.labelGroup = chart.renderer.g("labelGroup").add();
-              document.addEventListener("mouseup", function() {
-                if (cloneToolTip) {
-                  chart.container.firstChild.removeChild(cloneToolTip);
-                  cloneToolTip = undefined;
-                }
-                chart.mouseDown = false;
-                if (chart.label) {
-                  chart.label.destroy();
-                  chart.label = undefined;
-                }
-                if (chart.selectionRect) {
-                  chart.selectionRect.destroy();
-                  chart.selectionRect = undefined;
-                }
-              });
-              chart.container.onmousedown = function() {
+            load: function(e) {
+              if (!e.shiftKey) {
+                var chart = this;
+                chart.shiftPressed = false
+                chart.labelGroup = chart.renderer.g("labelGroup").add();
+                document.addEventListener("mouseup", function () {
+                  if (chart.shiftPressed){
+                    chart.shiftPressed = false
+                    if (chart.pointMouseDown.x < chart.hoverPoint.x){
+                      chart.xAxis[0].setExtremes(
+                          chart.pointMouseDown.x,
+                          chart.hoverPoint.x,
+                      );
+                    }
+                    else {
+                      chart.xAxis[0].setExtremes(
+                          chart.hoverPoint.x,
+                          chart.pointMouseDown.x,
+                      );
+                    }
+                  }
+                  if (cloneToolTip) {
+                    chart.container.firstChild.removeChild(cloneToolTip);
+                    cloneToolTip = undefined;
+                  }
+                  chart.mouseDown = false;
+                  if (chart.label) {
+                    chart.label.destroy();
+                    chart.label = undefined;
+                  }
+                  if (chart.selectionRect) {
+                    chart.selectionRect.destroy();
+                    chart.selectionRect = undefined;
+                  }
+                });
+              }
+              chart.container.onmousedown = function(e) {
                 chart.mouseDown = true;
-                if (cloneToolTip) {
-                  chart.container.firstChild.removeChild(cloneToolTip);
+                chart.shiftPressed = e.shiftKey
+                if (!chart.shiftPressed) {
+                  if (cloneToolTip) {
+                    chart.container.firstChild.removeChild(cloneToolTip);
+                  }
+                  cloneToolTip = chart.tooltip.label.element.cloneNode(true);
+                  chart.container.firstChild.appendChild(cloneToolTip);
                 }
-                cloneToolTip = chart.tooltip.label.element.cloneNode(true);
-                chart.container.firstChild.appendChild(cloneToolTip);
                 chart.pointMouseDown = chart.hoverPoint;
-              };
+              }
             },
           },
         },
@@ -136,38 +157,12 @@ export default {
                 // event when mouse is over the chart
                 mouseOver() {
                   var point = this,
-                    chart = point.series.chart,
-                    dif,
-                    percentDif,
-                    rectWidth,
-                    sign,
-                    percentageColor,
-                    devideBy,
-                    x;
-
-                  if (chart.mouseDown) {
-                    if (chart.label) {
-                      chart.label.destroy();
-                      chart.label = undefined;
-                    }
+                      chart = point.series.chart
+                  if (chart.shiftPressed){
                     if (chart.selectionRect) {
                       chart.selectionRect.destroy();
                       chart.selectionRect = undefined;
                     }
-                    if (chart.pointMouseDown.x < point.x) {
-                      dif = point.y - chart.pointMouseDown.y;
-                      devideBy = chart.pointMouseDown.y;
-                    } else {
-                      dif = chart.pointMouseDown.y - point.y;
-                      devideBy = point.y;
-                    }
-                    if (devideBy !== 0) {
-                      percentDif
-                        = Math.round((dif / devideBy) * 10000) / 100 + "%";
-                    } else {
-                      percentDif = 0;
-                    }
-
                     rectWidth = point.plotX - chart.pointMouseDown.plotX;
                     if (rectWidth > 0) {
                       x = chart.plotLeft + chart.pointMouseDown.plotX;
@@ -176,41 +171,95 @@ export default {
                       x = chart.plotLeft + point.plotX;
                       sign = -1;
                     }
-                    if (dif === 0) {
-                      percentageColor = "grey";
-                    } else {
-                      percentageColor
-                        = dif > 0
-                          ? "var(--v-success-base)"
-                          : "var(--v-error-base)";
-                    }
-
                     chart.selectionRect = chart.renderer
-                      .rect(
-                        x, // x
-                        chart.plotTop, // y
-                        (point.plotX - chart.pointMouseDown.plotX) * sign, // width
-                        chart.plotSizeY, // height
-                      )
-                      .attr({
-                        fill: "rgba(153, 158, 189, 0.2)",
-                        zIndex: -1,
-                      })
-                      .add();
-                    chart.label = chart.renderer
-                      .label(
-                        dif > 0 ? " +" + percentDif : percentDif,
-                        x
-                          + (point.plotX - chart.pointMouseDown.plotX)
-                            * sign
-                            * 0.5,
-                        60,
-                      )
-                      .add(chart.labelGroup)
-                      .css({ color: percentageColor });
-                    chart.labelGroup
-                      .translate(-chart.label.width / 2, 0)
-                      .toFront();
+                        .rect(
+                            x, // x
+                            chart.plotTop, // y
+                            (point.plotX - chart.pointMouseDown.plotX) * sign, // width
+                            chart.plotSizeY, // height
+                        )
+                        .attr({
+                          fill: "rgba(153, 158, 189, 0.2)",
+                          zIndex: -1,
+                        }).add();
+                  }
+                  else {
+                    var
+                        dif,
+                        percentDif,
+                        rectWidth,
+                        sign,
+                        percentageColor,
+                        devideBy,
+                        x;
+
+                    if (chart.mouseDown) {
+                      if (chart.label) {
+                        chart.label.destroy();
+                        chart.label = undefined;
+                      }
+                      if (chart.selectionRect) {
+                        chart.selectionRect.destroy();
+                        chart.selectionRect = undefined;
+                      }
+                      if (chart.pointMouseDown.x < point.x) {
+                        dif = point.y - chart.pointMouseDown.y;
+                        devideBy = chart.pointMouseDown.y;
+                      } else {
+                        dif = chart.pointMouseDown.y - point.y;
+                        devideBy = point.y;
+                      }
+                      if (devideBy !== 0) {
+                        percentDif
+                            = Math.round((dif / devideBy) * 10000) / 100 + "%";
+                      } else {
+                        percentDif = 0;
+                      }
+
+                      rectWidth = point.plotX - chart.pointMouseDown.plotX;
+                      if (rectWidth > 0) {
+                        x = chart.plotLeft + chart.pointMouseDown.plotX;
+                        sign = 1;
+                      } else {
+                        x = chart.plotLeft + point.plotX;
+                        sign = -1;
+                      }
+                      if (dif === 0) {
+                        percentageColor = "grey";
+                      } else {
+                        percentageColor
+                            = dif > 0
+                            ? "var(--v-success-base)"
+                            : "var(--v-error-base)";
+                      }
+
+                      chart.selectionRect = chart.renderer
+                          .rect(
+                              x, // x
+                              chart.plotTop, // y
+                              (point.plotX - chart.pointMouseDown.plotX) * sign, // width
+                              chart.plotSizeY, // height
+                          )
+                          .attr({
+                            fill: "rgba(153, 158, 189, 0.2)",
+                            zIndex: -1,
+                          })
+                          .add();
+                      chart.label = chart.renderer
+                          .label(
+                              dif > 0 ? " +" + percentDif : percentDif,
+                              x
+                              + (point.plotX - chart.pointMouseDown.plotX)
+                              * sign
+                              * 0.5,
+                              60,
+                          )
+                          .add(chart.labelGroup)
+                          .css({color: percentageColor});
+                      chart.labelGroup
+                          .translate(-chart.label.width / 2, 0)
+                          .toFront();
+                    }
                   }
                 },
               },
