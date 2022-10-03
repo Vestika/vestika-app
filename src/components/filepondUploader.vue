@@ -35,7 +35,7 @@ export default {
   components: {
     FilePond,
   },
-  emits: ["status"],
+  emits: ["file-uploaded"],
   props: {
     isLocked: {
       type: Boolean,
@@ -57,23 +57,29 @@ export default {
   },
 
   methods: {
-    async process(fieldName, file) {
+    async process(fieldName, file, metadata, load, error, progress) {
       const formData = new FormData();
       formData.append("file", file);
-      console.log(file);
-      let res;
-      try {
-        res = await api.post("/users/uploadfile", formData, {
+      console.log("Uploading file:", file.name);
+      console.debug(file);
+
+      await api.post("/users/uploadfile",
+        formData,
+        {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        });
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
-      console.log(res);
-      this.$emit("status", true);
+          onUploadProgress: (e) => {
+            // updating progress indicator
+            progress(e.lengthComputable, e.loaded, e.total);
+          },
+      }).then(response => {
+        load(response);
+        this.$emit("file-uploaded");
+      }).catch(error => {
+        console.error(error);
+        error("");
+      });
     },
   },
 };

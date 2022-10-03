@@ -33,6 +33,7 @@ export default {
             const idToken = await FireGetToken();
 
             if (confirm("You are about to delete all of your data")) {
+              localStorageManager.clear();
               api
                 .delete("/dashboard", {
                   headers: {
