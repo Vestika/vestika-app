@@ -7,8 +7,12 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async request => {
-    console.log(request.method.toUpperCase(), request.url);
     request.headers.Authorization = `Bearer ${await FireGetToken()}`;
+    console.info(
+      request.method.toUpperCase(),
+      request.baseURL + request.url,
+      request.data || "",
+    );
     return request;
   },
   error => {
@@ -19,16 +23,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   response => {
-    if (response == undefined) {
-      console.log("No Response");
-      return response;
-    }
-    console.log(
-      `${response.config.method.toUpperCase()} %s %s`,
-      response.request.responseURL,
-      response.status,
-      response.data,
-    );
+    console.log(response);
     return response.data;
   },
   error => {

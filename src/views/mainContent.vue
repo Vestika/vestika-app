@@ -2,7 +2,7 @@
   <div style="padding-top: 15px">
     <mainUploader
       v-if="!isFileUploaded && !isLoading"
-      @status="checkUploadStatus"
+      @status="handleFileUploaded"
     />
     <dashboard v-if="isFileUploaded && !isLoading" :portfolios="portfolios" />
   </div>
@@ -24,7 +24,7 @@ export default {
     dashboard,
     mainUploader,
   },
-  emits: ["on-loading"],
+  emits: ["app-loading"],
   data() {
     return {
       isFileUploaded: false,
@@ -55,6 +55,8 @@ export default {
 
   methods: {
     async createWebSocket() {
+      this.isLoading = true;
+
       const user = await FireGetUser();
 
       var ws_url = process.env.VUE_APP_WS_URL + user.uid;
@@ -70,11 +72,12 @@ export default {
 
       console.log("Registering message handler for WebSocket.");
       const self = this;
-      ws.onmessage = async function(event) {
+      ws.onmessage = async function(event) {// ######
         console.log("WebSocket: Received:", event);
         self.portfolios = JSON.parse(event.data);
         self.isLoading = false;
-        self.$emit("on-loading", self.isLoading);
+        self.isFileUploaded = true;
+        self.$emit("app-loading", self.isLoading);
 
         localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
         console.log("Portfolio data saved to LocalStorage.");
@@ -82,13 +85,9 @@ export default {
     },
 
     finalizeDataFetch() {
-      if (this.portfolios) {
-        this.isFileUploaded = true;
-      } else {
-        this.isFileUploaded = false;
-      }
+      this.isFileUploaded = !!this.portfolios;
       this.isLoading = false;
-      this.$emit("on-loading", this.isLoading);
+      this.$emit("app-loading", this.isLoading);
     },
 
     async getPortfolioData() {
@@ -101,12 +100,10 @@ export default {
       this.finalizeDataFetch();
     },
 
-    checkUploadStatus(status) {
-      if (status) {
-        this.isLoading = true;
-        this.$emit("on-loading", this.isLoading);
-        this.isFileUploaded = true;
-      }
+    handleFileUploaded() {
+      this.isLoading = true;
+      this.$emit("app-loading", this.isLoading);
+      this.isFileUploaded = true;
     },
   },
 };

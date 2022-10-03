@@ -1,6 +1,6 @@
 <template>
   <div id="uploader">
-    <filepondUploader @status="sendUploadStatusToParent"></filepondUploader>
+    <filepondUploader @file-uploaded="handleFileUploaded"></filepondUploader>
   </div>
 </template>
 
@@ -12,14 +12,15 @@ export default {
   components: {
     filepondUploader,
   },
-  emits: ["status"],
+  emits: ["file-uploaded"],
 
   data: function() {
     return {};
   },
   methods: {
-    sendUploadStatusToParent(status) {
-      this.$emit("status", status);
+    handleFileUploaded() {
+      // keep propagating the event upwards to the main component
+      this.$emit("file-uploaded");
     },
   },
 };
