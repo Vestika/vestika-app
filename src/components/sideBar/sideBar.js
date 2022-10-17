@@ -44,6 +44,7 @@ export default {
                   },
                 })
                 .then(resp => {
+                  console.debug(resp);
                   bus.$emit("data-cleared");
                 })
                 .catch(error => {
