@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import filepondUploader from "./filepondUploader";
+import filepondUploader from "@/components/filepondUploader.vue";
 
 export default {
   name: "mainUploader",

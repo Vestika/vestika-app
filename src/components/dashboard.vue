@@ -121,16 +121,16 @@
 
 <script>
 import { GridLayout, GridItem } from "vue-grid-layout";
-import api from "@/utils/api";
-import LayoutControlButton from "@/components/layoutControlButton";
-import barChart from "./charts/barChart.vue";
-import pieChart from "./charts/pieChart.vue";
-import stackedBarChart from "./charts/stackedBarChart.vue";
-import lineChart from "./charts/lineChart.vue";
-import tableChart from "./charts/tableChart";
-import numbers from "./charts/numbers";
-import defaultLayout from "./defaultDashboard.json";
-import filepondUploader from "./filepondUploader.vue";
+import api from "@/utils/api.js";
+import LayoutControlButton from "@/components/layoutControlButton.vue";
+import barChart from "@/components/charts/barChart.vue";
+import pieChart from "@/components/charts/pieChart.vue";
+import stackedBarChart from "@/components/charts/stackedBarChart.vue";
+import lineChart from "@/components/charts/lineChart.vue";
+import tableChart from "@/components/charts/tableChart.vue";
+import numbers from "@/components/charts/numbers.vue";
+import defaultLayout from "@/components/defaultDashboard.json";
+import filepondUploader from "@/components/filepondUploader.vue";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -195,6 +195,7 @@ export default {
     // fetch and parse the data from server.
     this.onPageLoad();
   },
+
   computed: {
     currentProperties: function() {
       // sends updated data to chart components

@@ -1,10 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import viewDashboard from "@/views/mainContent";
-import mainUploader from "../components/mainUploader";
-import feed from "../components/feed";
-import registration from "../views/registration";
-import { auth } from "../firebase.js";
+import viewDashboard from "@/views/mainContent.vue";
+import mainUploader from "@/components/mainUploader.vue";
+import feed from "@/components/feed.vue";
+import registration from "@/views/registration.vue";
+import { auth } from "@/firebase.js";
 
 Vue.use(VueRouter);
 

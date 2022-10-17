@@ -1,7 +1,8 @@
-import api from "@/utils/api";
-import router from "../../router/index";
-import { store } from "@/store";
-import { FireSignout, FireGetUser, FireGetToken } from "@/utils/firebase";
+import { bus } from "@/bus.js";
+import api from "@/utils/api.js";
+import router from "@/router/index.js";
+import { store } from "@/store.js";
+import { FireSignout, FireGetUser, FireGetToken } from "@/utils/firebase.js";
 
 const localStorageManager = require("../../utils/localStorage");
 
@@ -9,6 +10,7 @@ export default {
   mounted() {
     this.InitUserName();
   },
+
   data() {
     return {
       items: [
@@ -21,7 +23,7 @@ export default {
       storeState: store.state,
       username: undefined,
       userOptions: {
-        settings: {
+        "Settings": {
           icon: "mdi-cog",
           fn() {
             console.log("Nothing to happen yet");
@@ -38,20 +40,20 @@ export default {
                 .delete("/dashboard", {
                   headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    "Authorization": `Bearer ${idToken}`,
                   },
                 })
                 .then(resp => {
-                  console.log(resp?.status);
-                  console.log("delete OK");
+                  console.debug(resp);
+                  bus.$emit("data-cleared");
                 })
                 .catch(error => {
-                  console.log(error);
+                  console.error(error);
                 });
             }
           },
         },
-        signout: {
+        "Sign Out": {
           icon: "mdi-logout",
           async fn() {
             try {

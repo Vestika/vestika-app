@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { FireForgotPassword } from "../../utils/firebase.js";
+import { FireForgotPassword } from "@/utils/firebase.js";
 
 export default {
   props: {

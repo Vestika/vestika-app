@@ -56,8 +56,8 @@
 
 <script>
 import InfiniteLoading from "vue-infinite-loading";
-import api from "@/utils/api";
-import pieChart from "./charts/pieChart.vue";
+import api from "@/utils/api.js";
+import pieChart from "@/components/charts/pieChart.vue";
 
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
     async update() {},
     async infiniteHandler($state) {
       api
-        .get(`${process.env.VUE_APP_BASE_URL}/feed/scroll`, {
+        .get("/feed/scroll", {
           params: {
             last_id: this.last_id,
           },

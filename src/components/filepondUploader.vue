@@ -20,8 +20,8 @@
 import vueFilePond from "vue-filepond";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-import api from "@/utils/api";
-import { messages } from "./messages.json";
+import api from "@/utils/api.js";
+import { messages } from "@/components/messages.json";
 
 import "filepond/dist/filepond.min.css";
 
@@ -63,23 +63,25 @@ export default {
       console.log("Uploading file:", file.name);
       console.debug(file);
 
-      await api.post("/users/uploadfile",
-        formData,
-        {
+      await api
+        .post("/users/uploadfile", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          onUploadProgress: (e) => {
+          onUploadProgress: e => {
             // updating progress indicator
             progress(e.lengthComputable, e.loaded, e.total);
           },
-      }).then(response => {
-        load(response);
-        this.$emit("file-uploaded");
-      }).catch(error => {
-        console.error(error);
-        error("");
-      });
+        })
+        .then(response => {
+          load(response);
+          setTimeout(this.$refs.pond._pond.removeFiles, 2000);
+          this.$emit("file-uploaded");
+        })
+        .catch(error => {
+          console.error(error);
+          error("");
+        });
     },
   },
 };

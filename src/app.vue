@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import Signup from "@/views/registration_windows/signup";
-import RightSideBar from "@/components/rightSideBar";
-import navBar from "./components/navBar.vue";
-import sideBar from "./components/sideBar/sideBar.vue";
-import { messages } from "./components/messages";
+import Signup from "@/views/registration_windows/signup.vue";
+import RightSideBar from "@/components/rightSideBar.vue";
+import navBar from "@/components/navBar.vue";
+import sideBar from "@/components/sideBar/sideBar.vue";
+import { messages } from "@/components/messages.json";
 
 export default {
   name: "App",

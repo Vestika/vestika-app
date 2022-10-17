@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import mainContent from "@/views/mainContent";
+import mainContent from "@/views/mainContent.vue";
 
 Vue.use(Vuetify);
 

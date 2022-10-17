@@ -1,4 +1,4 @@
-import { auth, persistence, usersCollection } from "../firebase.js";
+import { auth, persistence, usersCollection } from "@/firebase.js";
 
 export async function FireSignin({ email, password }) {
   try {

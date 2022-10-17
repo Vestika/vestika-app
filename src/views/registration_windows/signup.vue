@@ -113,8 +113,8 @@
 </template>
 
 <script>
-import { store } from "../../store.js";
-import { FireSignup, FireSignUpAnonymous } from "../../utils/firebase.js";
+import { store } from "@/store.js";
+import { FireSignup, FireSignUpAnonymous } from "@/utils/firebase.js";
 
 export default {
   props: {
