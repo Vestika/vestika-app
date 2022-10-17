@@ -38,7 +38,7 @@ export default {
 
   mounted() {
     bus.$on("data-cleared", () =>
-      this.$nextTick((this.portfolios = undefined))
+      this.$nextTick((this.portfolios = undefined)),
     );
   },
 

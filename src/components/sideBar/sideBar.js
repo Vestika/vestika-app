@@ -40,13 +40,13 @@ export default {
                 .delete("/dashboard", {
                   headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${idToken}`,
+                    "Authorization": `Bearer ${idToken}`,
                   },
                 })
-                .then((resp) => {
+                .then(resp => {
                   bus.$emit("data-cleared");
                 })
-                .catch((error) => {
+                .catch(error => {
                   console.error(error);
                 });
             }

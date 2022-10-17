@@ -69,21 +69,20 @@ export default {
             load: function(e) {
               if (!e.shiftKey) {
                 var chart = this;
-                chart.shiftPressed = false
+                chart.shiftPressed = false;
                 chart.labelGroup = chart.renderer.g("labelGroup").add();
-                document.addEventListener("mouseup", function () {
-                  if (chart.shiftPressed){
-                    chart.shiftPressed = false
-                    if (chart.pointMouseDown.x < chart.hoverPoint.x){
+                document.addEventListener("mouseup", function() {
+                  if (chart.shiftPressed) {
+                    chart.shiftPressed = false;
+                    if (chart.pointMouseDown.x < chart.hoverPoint.x) {
                       chart.xAxis[0].setExtremes(
-                          chart.pointMouseDown.x,
-                          chart.hoverPoint.x,
+                        chart.pointMouseDown.x,
+                        chart.hoverPoint.x,
                       );
-                    }
-                    else {
+                    } else {
                       chart.xAxis[0].setExtremes(
-                          chart.hoverPoint.x,
-                          chart.pointMouseDown.x,
+                        chart.hoverPoint.x,
+                        chart.pointMouseDown.x,
                       );
                     }
                   }
@@ -104,7 +103,7 @@ export default {
               }
               chart.container.onmousedown = function(e) {
                 chart.mouseDown = true;
-                chart.shiftPressed = e.shiftKey
+                chart.shiftPressed = e.shiftKey;
                 if (!chart.shiftPressed) {
                   if (cloneToolTip) {
                     chart.container.firstChild.removeChild(cloneToolTip);
@@ -113,7 +112,7 @@ export default {
                   chart.container.firstChild.appendChild(cloneToolTip);
                 }
                 chart.pointMouseDown = chart.hoverPoint;
-              }
+              };
             },
           },
         },
@@ -157,8 +156,8 @@ export default {
                 // event when mouse is over the chart
                 mouseOver() {
                   var point = this,
-                      chart = point.series.chart
-                  if (chart.shiftPressed){
+                    chart = point.series.chart;
+                  if (chart.shiftPressed) {
                     if (chart.selectionRect) {
                       chart.selectionRect.destroy();
                       chart.selectionRect = undefined;
@@ -172,26 +171,25 @@ export default {
                       sign = -1;
                     }
                     chart.selectionRect = chart.renderer
-                        .rect(
-                            x, // x
-                            chart.plotTop, // y
-                            (point.plotX - chart.pointMouseDown.plotX) * sign, // width
-                            chart.plotSizeY, // height
-                        )
-                        .attr({
-                          fill: "rgba(153, 158, 189, 0.2)",
-                          zIndex: -1,
-                        }).add();
-                  }
-                  else {
-                    var
-                        dif,
-                        percentDif,
-                        rectWidth,
-                        sign,
-                        percentageColor,
-                        devideBy,
-                        x;
+                      .rect(
+                        x, // x
+                        chart.plotTop, // y
+                        (point.plotX - chart.pointMouseDown.plotX) * sign, // width
+                        chart.plotSizeY, // height
+                      )
+                      .attr({
+                        fill: "rgba(153, 158, 189, 0.2)",
+                        zIndex: -1,
+                      })
+                      .add();
+                  } else {
+                    var dif,
+                      percentDif,
+                      rectWidth,
+                      sign,
+                      percentageColor,
+                      devideBy,
+                      x;
 
                     if (chart.mouseDown) {
                       if (chart.label) {
@@ -211,7 +209,7 @@ export default {
                       }
                       if (devideBy !== 0) {
                         percentDif
-                            = Math.round((dif / devideBy) * 10000) / 100 + "%";
+                          = Math.round((dif / devideBy) * 10000) / 100 + "%";
                       } else {
                         percentDif = 0;
                       }
@@ -228,37 +226,37 @@ export default {
                         percentageColor = "grey";
                       } else {
                         percentageColor
-                            = dif > 0
+                          = dif > 0
                             ? "var(--v-success-base)"
                             : "var(--v-error-base)";
                       }
 
                       chart.selectionRect = chart.renderer
-                          .rect(
-                              x, // x
-                              chart.plotTop, // y
-                              (point.plotX - chart.pointMouseDown.plotX) * sign, // width
-                              chart.plotSizeY, // height
-                          )
-                          .attr({
-                            fill: "rgba(153, 158, 189, 0.2)",
-                            zIndex: -1,
-                          })
-                          .add();
+                        .rect(
+                          x, // x
+                          chart.plotTop, // y
+                          (point.plotX - chart.pointMouseDown.plotX) * sign, // width
+                          chart.plotSizeY, // height
+                        )
+                        .attr({
+                          fill: "rgba(153, 158, 189, 0.2)",
+                          zIndex: -1,
+                        })
+                        .add();
                       chart.label = chart.renderer
-                          .label(
-                              dif > 0 ? " +" + percentDif : percentDif,
-                              x
-                              + (point.plotX - chart.pointMouseDown.plotX)
+                        .label(
+                          dif > 0 ? " +" + percentDif : percentDif,
+                          x
+                            + (point.plotX - chart.pointMouseDown.plotX)
                               * sign
                               * 0.5,
-                              60,
-                          )
-                          .add(chart.labelGroup)
-                          .css({color: percentageColor});
+                          60,
+                        )
+                        .add(chart.labelGroup)
+                        .css({ color: percentageColor });
                       chart.labelGroup
-                          .translate(-chart.label.width / 2, 0)
-                          .toFront();
+                        .translate(-chart.label.width / 2, 0)
+                        .toFront();
                     }
                   }
                 },
@@ -292,15 +290,15 @@ export default {
           },
           buttonTheme: {
             // styles for the buttons
-            fill: "none",
-            stroke: "none",
+            "fill": "none",
+            "stroke": "none",
             "stroke-width": 0,
-            r: 8,
-            style: {
+            "r": 8,
+            "style": {
               color: "#999EBD",
               fontWeight: "bold",
             },
-            states: {
+            "states": {
               hover: {},
               select: {
                 fill: "#999EBD",

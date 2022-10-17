@@ -125,7 +125,7 @@ export default {
         res = await api.post("/goal", goalData, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`,
+            "Authorization": `Bearer ${idToken}`,
           },
         });
       } catch (error) {
@@ -156,7 +156,7 @@ export default {
           params: { goal_definition_id: goal.goalDefinitionId },
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`,
+            "Authorization": `Bearer ${idToken}`,
           },
         });
       } catch (error) {
