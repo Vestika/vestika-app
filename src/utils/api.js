@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FireGetToken } from "@/utils/firebase";
+import { FireGetToken } from "@/utils/firebase.js";
 
 const api = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,

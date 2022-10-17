@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { messages } from "../../components/messages.json";
+import { messages } from "@/components/messages.json";
 
 export default {
   props: {

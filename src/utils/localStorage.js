@@ -4,11 +4,19 @@ class localStorageManager {
       this.delete(key);
       return;
     }
-    localStorage.setItem(key, JSON.stringify(data));
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch {
+      console.error("Could not set data for key:", key);
+    }
   }
 
   get(key) {
-    return JSON.parse(localStorage.getItem(key));
+    try {
+      return JSON.parse(localStorage.getItem(key));
+    } catch {
+      console.error("Could not parse data for key:", key);
+    }
   }
 
   delete(key) {

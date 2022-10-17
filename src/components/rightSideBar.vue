@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import Calendar from "@/components/calendar";
-import notesList from "@/components/notesList";
+import Calendar from "@/components/calendar.vue";
+import notesList from "@/components/notesList.vue";
 import goalsList from "@/components/goalsList/goalsList.vue";
 
 export default {

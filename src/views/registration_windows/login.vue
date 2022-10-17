@@ -84,12 +84,12 @@
 </template>
 
 <script>
-import { store } from "../../store.js";
+import { store } from "@/store.js";
 import {
   FireSignin,
   FireHandleRememberMe,
   FireSigninGuest,
-} from "../../utils/firebase.js";
+} from "@/utils/firebase.js";
 
 export default {
   props: {

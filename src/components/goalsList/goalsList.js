@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
-import api from "@/utils/api";
-import { FireGetToken } from "@/utils/firebase";
+import api from "@/utils/api.js";
+import { FireGetToken } from "@/utils/firebase.js";
 
 Vue.use(Vuetify);
 

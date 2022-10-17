@@ -20,8 +20,8 @@
 import vueFilePond from "vue-filepond";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-import api from "@/utils/api";
-import { messages } from "./messages.json";
+import api from "@/utils/api.js";
+import { messages } from "@/components/messages.json";
 
 import "filepond/dist/filepond.min.css";
 
@@ -75,6 +75,7 @@ export default {
           },
       }).then(response => {
         load(response);
+        setTimeout(this.$refs.pond._pond.removeFiles, 2000);
         this.$emit("file-uploaded");
       }).catch(error => {
         console.error(error);

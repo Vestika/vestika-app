@@ -45,11 +45,10 @@
 </template>
 
 <script>
-import { store } from "../store.js";
-import { FireSignout } from "../utils/firebase";
-import { FireGetToken } from "@/utils/firebase";
-import router from "../router/index";
-import api from "@/utils/api";
+import { store } from "@/store.js";
+import { FireGetToken, FireSignout } from "@/utils/firebase.js";
+import router from "@/router/index.js";
+import api from "@/utils/api.js";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -64,7 +63,7 @@ export default {
       username: "mock",
       storeState: store.state,
       userOptions: {
-        settings: {
+        "Settings": {
           icon: "mdi-cog",
           fn() {
             console.log("Nothing to happen yet");
@@ -93,7 +92,7 @@ export default {
             }
           },
         },
-        signout: {
+        "Sign Out": {
           icon: "mdi-logout",
           async fn() {
             try {

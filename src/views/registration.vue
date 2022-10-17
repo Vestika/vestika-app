@@ -71,11 +71,11 @@
 </template>
 
 <script>
-import login from "./registration_windows/login.vue";
-import signup from "./registration_windows/signup.vue";
-import resetPassword from "./registration_windows/resetPassword";
-import verifyMail from "./registration_windows/verifyMail";
-import welcomePageImage from "./registration_windows/welcomePageImage";
+import login from "@/views/registration_windows/login.vue";
+import signup from "@/views/registration_windows/signup.vue";
+import resetPassword from "@/views/registration_windows/resetPassword.vue";
+import verifyMail from "@/views/registration_windows/verifyMail.vue";
+import welcomePageImage from "@/views/registration_windows/welcomePageImage.vue";
 
 const views = Object.freeze({
   loginView: 1,

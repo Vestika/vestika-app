@@ -1,9 +1,9 @@
 import Vue from "vue";
-import App from "./app.vue";
-import "./registerServiceWorker";
-import router from "./router";
-import vuetify from "./plugins/vuetify";
-import { auth } from "./firebase";
+import App from "@/app.vue";
+import "@/registerServiceWorker";
+import router from "@/router";
+import vuetify from "@/plugins/vuetify.js";
+import { auth } from "@/firebase.js";
 
 Vue.config.productionTip = false;
 let app;

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import InnerTableChart from "./innerTableChart";
+import InnerTableChart from "@/components/charts/innerTableChart.vue";
 
 export default {
   components: { InnerTableChart },

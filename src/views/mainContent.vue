@@ -1,18 +1,19 @@
 <template>
   <div style="padding-top: 15px">
     <mainUploader
-      v-if="!isFileUploaded && !isLoading"
-      @status="handleFileUploaded"
+      v-if="shouldDisplayUploader"
+      @file-uploaded="handleFileUploaded"
     />
-    <dashboard v-if="isFileUploaded && !isLoading" :portfolios="portfolios" />
+    <dashboard v-if="shouldDisplayDashbaord" :portfolios="portfolios" />
   </div>
 </template>
 
 <script>
-import dashboard from "@/components/dashboard";
-import mainUploader from "@/components/mainUploader";
-import { FireGetUser } from "@/utils/firebase";
-import api from "@/utils/api";
+import { bus } from "@/bus.js";
+import dashboard from "@/components/dashboard.vue";
+import mainUploader from "@/components/mainUploader.vue";
+import { FireGetUser } from "@/utils/firebase.js";
+import api from "@/utils/api.js";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -20,17 +21,25 @@ const PORTFOLIO_DATA = "portfoliosData";
 
 export default {
   name: "ViewDashboard",
+
   components: {
     dashboard,
     mainUploader,
   },
+
   emits: ["app-loading"],
+
   data() {
     return {
-      isFileUploaded: false,
       portfolios: undefined,
-      isLoading: true,
+      hasData: false,
     };
+  },
+
+  mounted() {
+    bus.$on("data-cleared", () =>
+      this.$nextTick((this.portfolios = undefined))
+    );
   },
 
   created() {
@@ -53,10 +62,17 @@ export default {
     }
   },
 
+  computed: {
+    shouldDisplayDashbaord() {
+      return this.hasData;
+    },
+    shouldDisplayUploader() {
+      return !this.shouldDisplayDashbaord;
+    },
+  },
+
   methods: {
     async createWebSocket() {
-      this.isLoading = true;
-
       const user = await FireGetUser();
 
       var ws_url = process.env.VUE_APP_WS_URL + user.uid;
@@ -72,12 +88,11 @@ export default {
 
       console.log("Registering message handler for WebSocket.");
       const self = this;
-      ws.onmessage = async function(event) {// ######
+      ws.onmessage = async function(event) {
         console.log("WebSocket: Received:", event);
         self.portfolios = JSON.parse(event.data);
-        self.isLoading = false;
-        self.isFileUploaded = true;
-        self.$emit("app-loading", self.isLoading);
+        self.hasData = true;
+        self.$emit("app-loading", false);
 
         localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
         console.log("Portfolio data saved to LocalStorage.");
@@ -85,9 +100,8 @@ export default {
     },
 
     finalizeDataFetch() {
-      this.isFileUploaded = !!this.portfolios;
-      this.isLoading = false;
-      this.$emit("app-loading", this.isLoading);
+      this.hasData = !!this.portfolios;
+      this.$emit("app-loading", false);
     },
 
     async getPortfolioData() {
@@ -101,9 +115,7 @@ export default {
     },
 
     handleFileUploaded() {
-      this.isLoading = true;
-      this.$emit("app-loading", this.isLoading);
-      this.isFileUploaded = true;
+      this.$emit("app-loading", true);
     },
   },
 };
