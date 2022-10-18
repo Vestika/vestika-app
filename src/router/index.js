@@ -5,6 +5,7 @@ import mainUploader from "@/components/mainUploader.vue";
 import feed from "@/components/feed.vue";
 import registration from "@/views/registration.vue";
 import { auth } from "@/firebase.js";
+import userProfile from "@/components/userProfile";
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,15 @@ const routes = [
     name: "Feed",
     component: feed,
     props: true,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: userProfile,
+    props: false,
     meta: {
       requiresAuth: true,
     },
