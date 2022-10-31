@@ -6,7 +6,10 @@
       ref="status"
     />
     <right-side-bar v-if="!isRegistrationRoute() && false"> </right-side-bar>
-    <side-bar v-if="!isRegistrationRoute()" />
+    <side-bar
+      :profilePictureUrl="profilePictureUrl"
+      v-if="!isRegistrationRoute()"
+    />
     <v-progress-linear
       :active="isLoading"
       indeterminate
@@ -23,7 +26,10 @@
       >
         {{ popUpText }}
       </v-alert>
-      <router-view @app-loading="changeLoadingStatus" />
+      <router-view
+        @on-profile-image-change="changeProfilePicture"
+        @app-loading="changeLoadingStatus"
+      />
       <v-dialog v-model="showDialog" width="550px" overlay-color="overlayColor">
         <v-card class="pa-7 registerCard">
           <signup @success-msg="showPopUp"></signup>
@@ -39,6 +45,10 @@ import RightSideBar from "@/components/rightSideBar.vue";
 import navBar from "@/components/navBar.vue";
 import sideBar from "@/components/sideBar/sideBar.vue";
 import { messages } from "@/components/messages.json";
+import { AVATAR_DEFAULT_IMAGE } from "@/utils/constants";
+import api from "@/utils/api";
+
+const localStorageManager = require("./utils/localStorage");
 
 export default {
   name: "App",
@@ -48,12 +58,16 @@ export default {
     navBar,
     sideBar,
   },
+  mounted() {
+    this.initUserProfilePicture();
+  },
   data() {
     return {
       showDialog: false,
       verifyPopUp: false,
       popUpText: "",
       isLoading: false,
+      profilePictureUrl: AVATAR_DEFAULT_IMAGE,
     };
   },
   methods: {
@@ -76,10 +90,26 @@ export default {
       console.log('Change "loading" status to:', loadingStatus);
       this.isLoading = loadingStatus;
     },
+    changeProfilePicture(ProfilePictureUrl) {
+      this.profilePictureUrl = ProfilePictureUrl;
+    },
     hide_alert() {
       window.setInterval(() => {
         this.verifyPopUp = false;
       }, 7500);
+    },
+    async initUserProfilePicture() {
+      var user_info_obj = localStorageManager.get("user_info");
+      if (!user_info_obj) {
+        try {
+          user_info_obj = await api.get("users");
+        } catch (error) {
+          console.log("Failed getting user profile picture in side bar");
+        }
+      }
+      if (user_info_obj && user_info_obj.profile_picture_url) {
+        this.profilePictureUrl = user_info_obj.profile_picture_url;
+      }
     },
   },
 };

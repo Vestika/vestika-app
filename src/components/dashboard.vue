@@ -265,6 +265,7 @@ export default {
 
     async loadUserLayout() {
       this.currentLayoutObj = await this.loadLayout();
+      localStorageManager.set("layoutData", this.currentLayoutObj);
       this.updateLayoutList();
     },
 

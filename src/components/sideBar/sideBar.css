@@ -61,6 +61,10 @@
     text-shadow: 0 4px 4px black;
 }
 
+.icon-list.theme--dark.v-list {
+    background: var(--v-background-base);
+}
+
 @font-face {
     font-family: 'Poiret One';
     font-style: normal;

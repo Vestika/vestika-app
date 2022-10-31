@@ -11,6 +11,9 @@ export default {
     this.InitUserName();
   },
 
+  props: {
+    profilePictureUrl: String,
+  },
   data() {
     return {
       items: [
@@ -26,7 +29,7 @@ export default {
         "Settings": {
           icon: "mdi-cog",
           fn() {
-            console.log("Nothing to happen yet");
+            router.push("/profile");
           },
         },
         "Delete Data": {
