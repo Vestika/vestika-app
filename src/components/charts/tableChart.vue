@@ -1,5 +1,4 @@
 <template>
-  <div style="height: 100%; overflow:auto">
     <v-data-table
       :headers="headers"
       :items="data"
@@ -8,6 +7,9 @@
       hide-default-footer
       disable-pagination
       class="transparent"
+      fixed-header
+      style="height: 100%"
+
     >
       <template #[`item.name`]="{ item }">
         <v-btn block text :href="item.url" target="_blank">
@@ -67,7 +69,6 @@
         <inner-table-chart :data-array="instOverTime(item.inst_over_time)" />
       </template>
     </v-data-table>
-  </div>
 </template>
 
 <script>
@@ -131,5 +132,12 @@ th {
 td {
   font-size: 16px !important;
   font-weight: bold;
+}
+.v-data-table__wrapper {
+  height: 100%;
+}
+
+.v-data-table .v-data-table-header tr th {
+  background-color: var(--v-background-base) !important;
 }
 </style>
