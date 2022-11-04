@@ -1,9 +1,9 @@
 <template>
-  <v-container fill-height fluid>
+  <v-container fill-height fluid id="registerContainer">
     <v-row justify="center" align="center">
       <v-col xs="12" md="9" lg="9">
-        <v-card class="registerCard elevation-2">
-          <v-window v-model="currentView">
+        <v-card id="registerCard">
+          <v-window v-model="currentView" class="registerWindow">
             <v-window-item :value="views.loginView">
               <v-row align="center" justify="center">
                 <v-col xs="12" md="6" lg="6" order="0">
@@ -127,19 +127,144 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .noHover-btn:before {
   display: none;
 }
 .noHover-btn:after {
   display: none;
 }
-/* Change the white to any color */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--v-registerCard-base) inset !important;
-  -webkit-text-fill-color: white !important;
+
+@mixin dots($count) {
+$text-shadow: ();
+  @for $i from 0 through $count {
+    $text-shadow: $text-shadow,
+    (-0.5+ (random()) * 3) +
+  em
+  (-0.5+ (random()) * 3) +
+  em
+  8px
+  hsla(random() * 360, 100%, 50%, 0.9);
+  }
+  text-shadow: $text-shadow;
 }
+
+html {
+  font: 5vmin/1.3 Serif;
+  overflow: hidden;
+  background: #123;
+}
+
+body {
+  color: transparent;
+  width: 0;
+}
+
+#registerContainer {
+  position: fixed;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  margin: 15px;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+#registerCard {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 30px rgba(158, 202, 237, 0.4);
+
+}
+
+.registerCard {
+  height: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+head::before,
+head::after,
+body::before,
+body::after {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  content: ".";
+  mix-blend-mode: screen;
+  animation: 33s -1s move infinite ease-in-out alternate;
+  z-index: -1;
+}
+
+body::before {
+  @include dots(10);
+  animation-duration: 33s;
+  animation-delay: -31s;
+}
+
+body::after {
+  @include dots(60);
+  animation-duration: 82s;
+  animation-delay: -21s;
+}
+
+head::before {
+  @include dots(40);
+  animation-duration: 81s;
+  animation-delay: -11s;
+}
+
+head::after {
+  @include dots(40);
+  animation-duration: 130s;
+  animation-delay: -1s;
+}
+
+@keyframes move {
+  from {
+    transform: rotate(0deg) scale(12) translateX(-20px);
+  }
+  to {
+    transform: rotate(360deg) scale(18) translateX(20px);
+  }
+}
+
+@font-face {
+  font-family: "Poiret One";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../../fonts/poiret-one-v9-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+  url("../../fonts/poiret-one-v9-latin-regular.eot?#iefix")
+  format("embedded-opentype"),
+    /* IE6-IE8 */ url("../../fonts/poiret-one-v9-latin-regular.woff2")
+  format("woff2"),
+    /* Super Modern Browsers */
+  url("../../fonts/poiret-one-v9-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("../../fonts/poiret-one-v9-latin-regular.ttf")
+  format("truetype"),
+    /* Safari, Android, iOS */
+  url("../../fonts/poiret-one-v9-latin-regular.svg#PoiretOne")
+  format("svg"); /* Legacy iOS */
+}
+@-webkit-keyframes autofill {
+  0%,100% {
+    color: #666;
+    background: transparent;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
 </style>
