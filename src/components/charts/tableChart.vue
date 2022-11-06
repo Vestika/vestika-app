@@ -1,73 +1,74 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="data"
-    :sort-by="['name']"
-    :sort-desc="[false, true]"
-    hide-default-footer
-    disable-pagination
-    class="transparent"
-    fixed-header
-    style="height: 100%"
-  >
-    <template #[`item.name`]="{ item }">
-      <v-btn block text :href="item.url" target="_blank">
-        {{ item.name }}
-      </v-btn>
-    </template>
+    <v-data-table
+      :headers="headers"
+      :items="data"
+      :sort-by="['name']"
+      :sort-desc="[false, true]"
+      hide-default-footer
+      disable-pagination
+      class="transparent"
+      fixed-header
+      style="height: 100%"
 
-    <template #[`item.units`]="{ item }">
-      {{
-        item.units
-          .toFixed()
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      }}
-    </template>
+    >
+      <template #[`item.name`]="{ item }">
+        <v-btn block text :href="item.url" target="_blank">
+          {{ item.name }}
+        </v-btn>
+      </template>
 
-    <template #[`item.price`]="{ item }">
-      {{
-        (isNaN(item.symbol) ? "$" : "₪") +
-          item.price
+      <template #[`item.units`]="{ item }">
+        {{
+          item.units
+            .toFixed()
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}
+      </template>
+
+      <template #[`item.price`]="{ item }">
+        {{
+          (isNaN(item.symbol) ? "$" : "₪") +
+            item.price
+              .toFixed(2)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}
+      </template>
+
+      <template #[`item.value`]="{ item }">
+        {{
+          "₪" +
+            item.value
+              .toFixed()
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}
+      </template>
+
+      <template #[`item.net_change`]="{ item }">
+        {{
+          "₪" +
+            item.net_change
+              .toFixed()
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}
+      </template>
+
+      <template #[`item.percent_change`]="{ item }">
+        {{
+          item.percent_change
             .toFixed(2)
             .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      }}
-    </template>
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%"
+        }}
+      </template>
 
-    <template #[`item.value`]="{ item }">
-      {{
-        "₪" +
-          item.value
-            .toFixed()
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      }}
-    </template>
-
-    <template #[`item.net_change`]="{ item }">
-      {{
-        "₪" +
-          item.net_change
-            .toFixed()
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      }}
-    </template>
-
-    <template #[`item.percent_change`]="{ item }">
-      {{
-        item.percent_change
-          .toFixed(2)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%"
-      }}
-    </template>
-
-    <template #[`item.chart`]="{ item }">
-      <inner-table-chart :data-array="instOverTime(item.inst_over_time)" />
-    </template>
-  </v-data-table>
+      <template #[`item.chart`]="{ item }">
+        <inner-table-chart :data-array="instOverTime(item.inst_over_time)" />
+      </template>
+    </v-data-table>
 </template>
 
 <script>

@@ -1,8 +1,12 @@
 <template>
   <v-card-text>
+    <h1
+      class="text-center display-2 white--text text--accent-3 font-weight-light"
+    >
+      Welcome
+    </h1>
     <h3 class="text-center white--text ma-3 font-weight-light">
-      LOGIN /<br/>
-      START EXPLORING
+      PLEASE LOGIN AND START EXPLORING
     </h3>
     <v-form class="pt-14 mb-0 shrink mx-13" @submit.prevent="signin(false)">
       <v-text-field
@@ -51,6 +55,7 @@
           type="submit"
           data-cy="signin"
           class="buttons white--text font-weight-bold mr-2"
+          width="48%"
           >LOGIN</v-btn
         >
         <v-btn
@@ -70,7 +75,6 @@
           class="noHover-btn white--text mt-2 font-weight-light"
           text
           @click="$emit('new-view', views.signUpView)"
-          style="font-size: 14px;"
         >
           don't have an account?
         </v-btn>
