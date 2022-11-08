@@ -9,6 +9,7 @@
     <side-bar
       :profilePictureUrl="profilePictureUrl"
       v-if="!isRegistrationRoute()"
+      @error-loading-image="DownloadAvatarImage"
     />
     <v-progress-linear
       :active="isLoading"
@@ -68,6 +69,7 @@ export default {
       popUpText: "",
       isLoading: false,
       profilePictureUrl: AVATAR_DEFAULT_IMAGE,
+      user_info_obj: undefined,
     };
   },
   methods: {
@@ -98,6 +100,16 @@ export default {
         this.verifyPopUp = false;
       }, 7500);
     },
+
+    async DownloadAvatarImage() {
+      var profilePictureUrl = await api.get(
+        "/users/download_profile_picture_signed_url",
+      );
+      this.changeProfilePicture(profilePictureUrl);
+      this.user_info_obj.profile_picture_url = this.profilePictureUrl;
+      localStorageManager.set("user_info", this.user_info_obj);
+    },
+
     async initUserProfilePicture() {
       var user_info_obj = localStorageManager.get("user_info");
       if (!user_info_obj) {
@@ -109,6 +121,8 @@ export default {
       }
       if (user_info_obj && user_info_obj.profile_picture_url) {
         this.profilePictureUrl = user_info_obj.profile_picture_url;
+        this.user_info_obj = user_info_obj;
+        localStorageManager.set("user_info", this.user_info_obj);
       }
     },
   },

@@ -85,5 +85,9 @@ export default {
       const user = await FireGetUser();
       this.username = user.email.split("@")[0];
     },
+    imageLoadError() {
+      console.log("image error");
+      this.$emit("error-loading-image");
+    },
   },
 };

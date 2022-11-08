@@ -27,7 +27,7 @@
         <template #activator="{ on }">
           <v-btn icon v-on="on">
             <v-list-item-avatar size="60px" class="ma-0" style="box-shadow: var(--v-mainTheme-base) 0px 4px 1px">
-              <v-img :src="profilePictureUrl" />
+              <v-img :src="profilePictureUrl" @error="imageLoadError" />
             </v-list-item-avatar>
           </v-btn>
 <!--          <div v-if="storeState.isAnonymous" class="mr-4">-->
