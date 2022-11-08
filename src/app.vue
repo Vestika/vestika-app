@@ -106,7 +106,7 @@ export default {
         "/users/download_profile_picture_signed_url",
       );
       this.changeProfilePicture(profilePictureUrl);
-      this.user_info_obj.profile_picture_url = this.profilePictureUrl
+      this.user_info_obj.profile_picture_url = this.profilePictureUrl;
       localStorageManager.set("user_info", this.user_info_obj);
     },
 
@@ -121,7 +121,7 @@ export default {
       }
       if (user_info_obj && user_info_obj.profile_picture_url) {
         this.profilePictureUrl = user_info_obj.profile_picture_url;
-        this.user_info_obj = user_info_obj
+        this.user_info_obj = user_info_obj;
         localStorageManager.set("user_info", this.user_info_obj);
       }
     },
