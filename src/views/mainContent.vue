@@ -75,7 +75,6 @@ export default {
       growthbook.setAttributes({
       id: user.id,
       });
-      console.log(growthbook.getFeatures());
     },
     async createWebSocket() {
       const user = await FireGetUser();
