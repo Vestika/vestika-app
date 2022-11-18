@@ -1,5 +1,6 @@
 <template>
   <file-pond
+    v-if="shouldDisplayUploader"
     ref="pond"
     name="data"
     label-idle="drag and drop or click to upload"
@@ -24,6 +25,7 @@ import api from "@/utils/api.js";
 import { messages } from "@/components/messages.json";
 
 import "filepond/dist/filepond.min.css";
+import {growthbook} from "../utils/featureFlag";
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -44,6 +46,9 @@ export default {
   },
 
   computed: {
+    shouldDisplayUploader() {
+      return growthbook.isOn("upload_enabled");
+    },
     isUploadEnabled() {
       return this.isLocked;
     },
