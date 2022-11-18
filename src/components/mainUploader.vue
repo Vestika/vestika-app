@@ -20,7 +20,6 @@ export default {
   },
   computed: {
     shouldDisplayUploader() {
-      console.log("upload_enabled " + growthbook.isOn("upload_enabled"));
       return growthbook.isOn("upload_enabled");
     },
   },
