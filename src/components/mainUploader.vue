@@ -1,11 +1,12 @@
 <template>
-  <div id="uploader">
+  <div id="uploader" v-if="shouldDisplayUploader">
     <filepondUploader @file-uploaded="handleFileUploaded"></filepondUploader>
   </div>
 </template>
 
 <script>
 import filepondUploader from "@/components/filepondUploader.vue";
+import {growthbook} from "../utils/featureFlag";
 
 export default {
   name: "mainUploader",
@@ -16,6 +17,12 @@ export default {
 
   data: function() {
     return {};
+  },
+  computed: {
+    shouldDisplayUploader() {
+      console.log("upload_enabled " + growthbook.isOn("upload_enabled"));
+      return growthbook.isOn("upload_enabled");
+    },
   },
   methods: {
     handleFileUploaded() {

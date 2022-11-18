@@ -1153,6 +1153,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
+"@growthbook/growthbook@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@growthbook/growthbook/-/growthbook-0.20.0.tgz#4276487468989fa6bd020b124678211ff74791f5"
+  integrity sha512-3hqy7+UsM2z47rnwDaPGrbHA7NlZ74Kh4unAMSULyXnD9F3lJdoSd7+y9r31y+f81HK0wTauu9RFMNFZNdXiUQ==
+
 "@grpc/grpc-js@^1.0.0":
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.3.7.tgz#58b687aff93b743aafde237fd2ee9a3259d7f2d8"
