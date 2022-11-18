@@ -1,7 +1,6 @@
 <template>
   <div style="padding-top: 15px">
     <mainUploader
-      v-if="shouldDisplayUploader"
       @file-uploaded="handleFileUploaded"
     />
     <dashboard v-if="shouldDisplayDashbaord" :portfolios="portfolios" />
@@ -14,6 +13,7 @@ import dashboard from "@/components/dashboard.vue";
 import mainUploader from "@/components/mainUploader.vue";
 import { FireGetUser } from "@/utils/firebase.js";
 import api from "@/utils/api.js";
+import {growthbook} from "../utils/featureFlag";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -44,6 +44,7 @@ export default {
 
   created() {
     this.createWebSocket();
+    this.setFeatures();
 
     if (!localStorageManager.has(PORTFOLIO_DATA)) {
       console.log("Getting data.");
@@ -66,12 +67,15 @@ export default {
     shouldDisplayDashbaord() {
       return this.hasData;
     },
-    shouldDisplayUploader() {
-      return !this.shouldDisplayDashbaord;
-    },
   },
 
   methods: {
+    async setFeatures() {
+      const user = await FireGetUser();
+      growthbook.setAttributes({
+      id: user.id,
+      });
+    },
     async createWebSocket() {
       const user = await FireGetUser();
 
