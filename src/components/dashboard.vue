@@ -274,8 +274,6 @@ export default {
       // on load or when user clicks the load custom layout button, his custom layout is loaded.
       let dashboard;
       try {
-        // eslint-disable-next-line no-debugger
-        debugger;
         dashboard = localStorageManager.get("layoutData");
         if (!dashboard) {
           dashboard = await api.get("/dashboard");
@@ -362,8 +360,6 @@ export default {
       // load layout from default layout.
       var self = this;
       // create a deep copy of the layout object.
-      // eslint-disable-next-line no-debugger
-      debugger;
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
         layoutData.dataProp = self.dashboardData[layoutData.name];
