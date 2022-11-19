@@ -67,7 +67,7 @@
   },
   "6": {
     "x": 0,
-    "y": 9,
+    "y": 18,
     "w": 2,
     "h": 3,
     "i": "6",
@@ -100,13 +100,13 @@
   },
   "9": {
     "x": 0,
-    "y": 18,
+    "y": 6,
     "w": 2,
     "h": 3,
     "i": "9",
     "c": "numbers",
     "isComponent": true,
     "isChart": false,
-    "name": "USD/ILS"
+    "name": "USDILS"
   }
 }

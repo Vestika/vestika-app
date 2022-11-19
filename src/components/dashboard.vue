@@ -266,7 +266,10 @@ export default {
     },
 
     async loadUserLayout() {
+      // eslint-disable-next-line no-debugger
+      debugger;
       this.currentLayoutObj = await this.loadLayout();
+      console.log(this.currentLayoutObj);
       localStorageManager.set("layoutData", this.currentLayoutObj);
       this.updateLayoutList();
     },
@@ -288,6 +291,8 @@ export default {
         }
         return {};
       }
+      // eslint-disable-next-line no-debugger
+      debugger;
       return dashboard;
     },
 
@@ -440,6 +445,9 @@ export default {
       this.dashboardData[
         "Net Change No Div"
       ] = this.portfolios.net_change_no_dividends.value;
+      // eslint-disable-next-line no-debugger
+      debugger;
+      console.log(this.portfolios.dividends.data);
       this.dashboardData["Dividends"] = this.portfolios.dividends.data;
       this.dashboardData["Instrument Table"] = this.portfolios.instruments.data;
       this.dashboardData["Value Over Time"] = this.parseNetWorthOverTime(
@@ -468,9 +476,9 @@ export default {
 
       this.dashboardData["USD/ILS"] = this.setNumberBox(
           this.portfolios.usd_ils.value,
-        "USD/ILS",
+        "USDILS",
           "rgba(255, 255, 255, 0.2)",
-          2,
+          3,
       )
 
       await this.loadUserLayout();
