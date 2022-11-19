@@ -200,8 +200,6 @@ export default {
   computed: {
     currentProperties: function() {
       // sends updated data to chart components
-      // eslint-disable-next-line no-debugger
-      debugger;
       return item =>
         Object({
           data: item.dataProp,
@@ -219,8 +217,6 @@ export default {
 
     resetUserLayout() {
       // when user clicks the reset layout button, the default layout is loaded.
-      // eslint-disable-next-line no-debugger
-      debugger;
       this.loadFromDefault();
       this.currentLayoutObj = this.defaultLayoutObj;
       this.updateLayoutList();
@@ -367,8 +363,6 @@ export default {
       // create a deep copy of the layout object.
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
-        // eslint-disable-next-line no-debugger
-        debugger;
         layoutData.dataProp = self.dashboardData[layoutData.name];
       }
     },
@@ -380,8 +374,6 @@ export default {
         if (layout_data?.name === "Upload Box" && !growthbook.isOn("upload_enabled")) {
           continue;
         }
-        // eslint-disable-next-line no-debugger
-        debugger;
         this.currentLayoutArr.push(layout_data);
       }
     },
@@ -457,8 +449,6 @@ export default {
         this.portfolios.commissions.data,
       );
 
-      // eslint-disable-next-line no-debugger
-      debugger;
       this.dashboardData["Value"] = this.setNumberBox(
           this.portfolios.net_worth.value,
         "Value",
