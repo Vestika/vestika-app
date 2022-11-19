@@ -200,6 +200,8 @@ export default {
   computed: {
     currentProperties: function() {
       // sends updated data to chart components
+      // eslint-disable-next-line no-debugger
+      debugger;
       return item =>
         Object({
           data: item.dataProp,
@@ -217,6 +219,8 @@ export default {
 
     resetUserLayout() {
       // when user clicks the reset layout button, the default layout is loaded.
+      // eslint-disable-next-line no-debugger
+      debugger;
       this.loadFromDefault();
       this.currentLayoutObj = this.defaultLayoutObj;
       this.updateLayoutList();
@@ -235,6 +239,7 @@ export default {
         uploadBox: this.currentLayoutObj["6"],
         worthOverTime: this.currentLayoutObj["7"],
         instrumentTable: this.currentLayoutObj["8"],
+        usdIls: this.currentLayoutObj["9"],
       };
     },
 
@@ -362,6 +367,8 @@ export default {
       // create a deep copy of the layout object.
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
+        // eslint-disable-next-line no-debugger
+        debugger;
         layoutData.dataProp = self.dashboardData[layoutData.name];
       }
     },
@@ -373,6 +380,8 @@ export default {
         if (layout_data?.name === "Upload Box" && !growthbook.isOn("upload_enabled")) {
           continue;
         }
+        // eslint-disable-next-line no-debugger
+        debugger;
         this.currentLayoutArr.push(layout_data);
       }
     },
@@ -400,7 +409,7 @@ export default {
     },
 
     parseAssets(assetsData) {
-      var assetsArray = [];
+      let assetsArray = [];
       let arrayLength = assetsData.length;
       for (let j = 0; j < arrayLength; j++) {
         assetsArray[j] = [assetsData[j].name, assetsData[j].value];
@@ -408,29 +417,16 @@ export default {
       return assetsArray;
     },
 
-    getNetWorth(netWorthData) {
+    setNumberBox(data, name, color="var(--v-success-base)", fixed=0) {
       return {
         number:
           String.fromCharCode(0x20aa) // NIS symbol
-          + netWorthData
-            .toFixed()
+          + data
+            .toFixed(fixed)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             .toString(),
-        color: "var(--v-success-base)",
-        title: "Value",
-      };
-    },
-
-    getReturnValue(netChangeData) {
-      return {
-        number:
-          String.fromCharCode(0x20aa) // NIS symbol
-          + netChangeData
-            .toFixed()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            .toString(),
-        color: "var(--v-success-base)",
-        title: "Return",
+        color: color,
+        title: name,
       };
     },
 
@@ -460,19 +456,33 @@ export default {
       this.dashboardData["Commissions"] = this.parseCommissions(
         this.portfolios.commissions.data,
       );
-      this.dashboardData["Value"] = this.getNetWorth(
-        this.portfolios.net_worth.value,
+
+      // eslint-disable-next-line no-debugger
+      debugger;
+      this.dashboardData["Value"] = this.setNumberBox(
+          this.portfolios.net_worth.value,
+        "Value",
       );
 
       // Return value includes earnings from dividends
-      this.dashboardData["Return"] = this.getReturnValue(
-        this.portfolios.net_change_with_dividends.value,
-      );
+      this.dashboardData["Return"] = this.setNumberBox(
+          this.portfolios.net_change_with_dividends.value,
+        "Return",
+      )
 
       this.dashboardData["%Return"] = this.getNetPercent(
         this.portfolios.percent_change.value,
       );
+
       this.dashboardData["Upload Box"] = this.uploadStatus;
+
+      this.dashboardData["USD/ILS"] = this.setNumberBox(
+          this.portfolios.usd_ils.value,
+        "USD/ILS",
+          "rgba(255, 255, 255, 0.2)",
+          2,
+      )
+
       await this.loadUserLayout();
     },
 

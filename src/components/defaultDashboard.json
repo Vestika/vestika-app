@@ -82,7 +82,7 @@
     "w": 11,
     "h": 6,
     "i": "7",
-    "c":"lineChart",
+    "c": "lineChart",
     "isComponent": true,
     "isChart": true,
     "name": "Value Over Time"
@@ -97,5 +97,16 @@
     "isComponent": true,
     "isChart": false,
     "name": "Instrument Table"
+  },
+  "9": {
+    "x": 0,
+    "y": 18,
+    "w": 2,
+    "h": 3,
+    "i": "9",
+    "c": "numbers",
+    "isComponent": true,
+    "isChart": false,
+    "name": "USD/ILS"
   }
 }
