@@ -400,7 +400,7 @@ export default {
     },
 
     parseAssets(assetsData) {
-      var assetsArray = [];
+      let assetsArray = [];
       let arrayLength = assetsData.length;
       for (let j = 0; j < arrayLength; j++) {
         assetsArray[j] = [assetsData[j].name, assetsData[j].value];
@@ -408,29 +408,16 @@ export default {
       return assetsArray;
     },
 
-    getNetWorth(netWorthData) {
+    setNumberBox(data, name, color="var(--v-success-base)", fixed=0) {
       return {
         number:
           String.fromCharCode(0x20aa) // NIS symbol
-          + netWorthData
-            .toFixed()
+          + data
+            .toFixed(fixed)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             .toString(),
-        color: "var(--v-success-base)",
-        title: "Value",
-      };
-    },
-
-    getReturnValue(netChangeData) {
-      return {
-        number:
-          String.fromCharCode(0x20aa) // NIS symbol
-          + netChangeData
-            .toFixed()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            .toString(),
-        color: "var(--v-success-base)",
-        title: "Return",
+        color: color,
+        title: name,
       };
     },
 
@@ -460,14 +447,17 @@ export default {
       this.dashboardData["Commissions"] = this.parseCommissions(
         this.portfolios.commissions.data,
       );
-      this.dashboardData["Value"] = this.getNetWorth(
-        this.portfolios.net_worth.value,
+
+      this.dashboardData["Value"] = this.setNumberBox(
+          this.portfolios.net_worth.value,
+        "Value",
       );
 
       // Return value includes earnings from dividends
-      this.dashboardData["Return"] = this.getReturnValue(
-        this.portfolios.net_change_with_dividends.value,
-      );
+      this.dashboardData["Return"] = this.setNumberBox(
+          this.portfolios.net_change_with_dividends.value,
+        "Return",
+      )
 
       this.dashboardData["%Return"] = this.getNetPercent(
         this.portfolios.percent_change.value,
