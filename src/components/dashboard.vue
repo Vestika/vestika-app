@@ -466,7 +466,7 @@ export default {
 
       this.dashboardData["USD/ILS"] = this.setNumberBox(
           this.portfolios.usd_ils.value,
-        "USDILS",
+        "USD/ILS",
           "rgba(255, 255, 255, 0.2)",
           3,
       )
