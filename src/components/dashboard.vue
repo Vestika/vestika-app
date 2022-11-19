@@ -131,6 +131,7 @@ import tableChart from "@/components/charts/tableChart.vue";
 import numbers from "@/components/charts/numbers.vue";
 import defaultLayout from "@/components/defaultDashboard.json";
 import filepondUploader from "@/components/filepondUploader.vue";
+import {growthbook} from "../utils/featureFlag";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -273,6 +274,8 @@ export default {
       // on load or when user clicks the load custom layout button, his custom layout is loaded.
       let dashboard;
       try {
+        // eslint-disable-next-line no-debugger
+        debugger;
         dashboard = localStorageManager.get("layoutData");
         if (!dashboard) {
           dashboard = await api.get("/dashboard");
@@ -359,6 +362,8 @@ export default {
       // load layout from default layout.
       var self = this;
       // create a deep copy of the layout object.
+      // eslint-disable-next-line no-debugger
+      debugger;
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
         layoutData.dataProp = self.dashboardData[layoutData.name];
@@ -369,6 +374,9 @@ export default {
       // when layout object changes, it will update the layout list.
       this.currentLayoutArr = [];
       for (const [, layout_data] of Object.entries(this.currentLayoutObj)) {
+        if (layout_data?.name === "Upload Box" && !growthbook.isOn("upload_enabled")) {
+          continue;
+        }
         this.currentLayoutArr.push(layout_data);
       }
     },
