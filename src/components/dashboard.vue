@@ -463,6 +463,14 @@ export default {
         this.portfolios.percent_change.value,
       );
       this.dashboardData["Upload Box"] = this.uploadStatus;
+
+      this.dashboardData["USD/ILS"] = this.setNumberBox(
+          this.portfolios.usd_ils.value,
+        "USDILS",
+          "rgba(255, 255, 255, 0.2)",
+          3,
+      )
+
       await this.loadUserLayout();
     },
 
