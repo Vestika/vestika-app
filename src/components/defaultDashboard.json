@@ -67,7 +67,7 @@
   },
   "6": {
     "x": 0,
-    "y": 9,
+    "y": 18,
     "w": 2,
     "h": 3,
     "i": "6",
@@ -97,5 +97,16 @@
     "isComponent": true,
     "isChart": false,
     "name": "Instrument Table"
+  },
+  "9": {
+    "x": 0,
+    "y": 9,
+    "w": 2,
+    "h": 3,
+    "i": "9",
+    "c": "numbers",
+    "isComponent": true,
+    "isChart": false,
+    "name": "USD/ILS"
   }
 }
