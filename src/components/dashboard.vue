@@ -1,5 +1,9 @@
 <template>
   <div>
+    <manualStock
+      :dialog="showManualStockDialog"
+      @close="showManualStockDialog = false"
+    />
     <v-row align="center" justify="center">
       <!--  Restore  -->
       <layout-control-button
@@ -94,6 +98,7 @@
               :is="item.c"
               v-bind="currentProperties(item)"
               :ref="item.c"
+              @show-manual-stock-dialog="openManualStockDialog"
             ></component>
           </div>
           <v-menu
@@ -132,6 +137,7 @@ import numbers from "@/components/charts/numbers.vue";
 import defaultLayout from "@/components/defaultDashboard.json";
 import filepondUploader from "@/components/filepondUploader.vue";
 import { growthbook } from "../utils/featureFlag";
+import manualStock from "@/components/manualStock.vue";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -148,6 +154,7 @@ export default {
     tableChart,
     numbers,
     filepondUploader,
+    manualStock,
   },
 
   props: {
@@ -189,6 +196,7 @@ export default {
       y: 0,
       dashboardData: {},
       userDashboardId: undefined,
+      showManualStockDialog: false,
     };
   },
 
@@ -210,6 +218,10 @@ export default {
   },
 
   methods: {
+    openManualStockDialog() {
+      this.showManualStockDialog = true;
+    },
+
     updateChartsSize: function() {
       // iterates over the charts and fit their sizes to container size.
       this.currentLayoutArr.forEach(item => this.updateSize(item));

@@ -209,3 +209,16 @@ export const COUNTRIES = [
 
 export const AVATAR_DEFAULT_IMAGE
   = "https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png";
+
+export const SYMBOLS = [
+  "AAPL",
+  "MSFT",
+  "GOOG",
+  "GOOGL",
+  "PANW",
+  "AMZN",
+  "BRK/A",
+  "BRK/B",
+  "TSLA",
+  "MMM",
+];
