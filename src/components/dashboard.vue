@@ -131,7 +131,7 @@ import tableChart from "@/components/charts/tableChart.vue";
 import numbers from "@/components/charts/numbers.vue";
 import defaultLayout from "@/components/defaultDashboard.json";
 import filepondUploader from "@/components/filepondUploader.vue";
-import {growthbook} from "../utils/featureFlag";
+import { growthbook } from "../utils/featureFlag";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -386,7 +386,10 @@ export default {
       // when layout object changes, it will update the layout list.
       this.currentLayoutArr = [];
       for (const [, layout_data] of Object.entries(this.currentLayoutObj)) {
-        if (layout_data?.name === "Upload Box" && !growthbook.isOn("upload_enabled")) {
+        if (
+          layout_data?.name === "Upload Box"
+          && !growthbook.isOn("upload_enabled")
+        ) {
           continue;
         }
         this.currentLayoutArr.push(layout_data);
@@ -424,7 +427,7 @@ export default {
       return assetsArray;
     },
 
-    setNumberBox(data, name, color="var(--v-success-base)", fixed=0, symbol=0x20aa) {
+    setNumberBox(data, name, color = "var(--v-success-base)", fixed = 0, symbol = 0x20aa) {
       return {
         number:
           String.fromCharCode(symbol) // NIS symbol
@@ -465,15 +468,15 @@ export default {
       );
 
       this.dashboardData["Value"] = this.setNumberBox(
-          this.portfolios.net_worth.value,
+        this.portfolios.net_worth.value,
         "Value",
       );
 
       // Return value includes earnings from dividends
       this.dashboardData["Return"] = this.setNumberBox(
-          this.portfolios.net_change_with_dividends.value,
+        this.portfolios.net_change_with_dividends.value,
         "Return",
-      )
+      );
 
       this.dashboardData["%Return"] = this.getNetPercent(
         this.portfolios.percent_change.value,
@@ -481,11 +484,11 @@ export default {
       this.dashboardData["Upload Box"] = this.uploadStatus;
 
       this.dashboardData["USD/ILS"] = this.setNumberBox(
-          this.portfolios.usd_ils.value,
+        this.portfolios.usd_ils.value,
         "USD/ILS",
-          "rgba(255, 255, 255, 0.2)",
-          3,
-      )
+        "rgba(255, 255, 255, 0.2)",
+        3,
+      );
 
       this.dashboardData["Cash Balance"] = this.setNumberBox(
           this.portfolios.balance.value,
