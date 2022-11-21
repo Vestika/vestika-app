@@ -242,13 +242,13 @@ export default {
       // when user clicks the save layout button, the custom layout is saved to local storage and database.
       let dashboard;
       // save dashboard to local storage
+      localStorageManager.set("layoutData", this.currentLayoutObj);
       let curLayout = {...this.currentLayoutObj}
       for (let key in curLayout) {
         delete curLayout[key]?.dataProp;
         delete curLayout[key]?.moved;
       }
 
-      localStorageManager.set("layoutData", curLayout);
       try {
         if (this.userDashboardId) {
           console.log("update");
