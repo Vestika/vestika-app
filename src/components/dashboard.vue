@@ -408,10 +408,10 @@ export default {
       return assetsArray;
     },
 
-    setNumberBox(data, name, color="var(--v-success-base)", fixed=0) {
+    setNumberBox(data, name, color="var(--v-success-base)", fixed=0, symbol=0x20aa) {
       return {
         number:
-          String.fromCharCode(0x20aa) // NIS symbol
+          String.fromCharCode(symbol) // NIS symbol
           + data
             .toFixed(fixed)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -469,6 +469,21 @@ export default {
         "USD/ILS",
           "rgba(255, 255, 255, 0.2)",
           3,
+      )
+
+      this.dashboardData["Cash Balance"] = this.setNumberBox(
+          this.portfolios.balance.value,
+        "Cash Balance",
+          "rgba(255, 255, 255, 0.2)",
+          2,
+      )
+
+      this.dashboardData["USD"] = this.setNumberBox(
+          this.portfolios.currency_usd.value,
+        "USD",
+          "rgba(255, 255, 255, 0.2)",
+          2,
+          0x24,
       )
 
       await this.loadUserLayout();
