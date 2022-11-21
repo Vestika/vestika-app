@@ -108,5 +108,27 @@
     "isComponent": true,
     "isChart": false,
     "name": "USD/ILS"
+  },
+  "10": {
+    "x": 2,
+    "y": 18,
+    "w": 2,
+    "h": 3,
+    "i": "10",
+    "c": "numbers",
+    "isComponent": true,
+    "isChart": false,
+    "name": "Cash Balance"
+  },
+  "11": {
+    "x": 4,
+    "y": 18,
+    "w": 2,
+    "h": 3,
+    "i": "11",
+    "c": "numbers",
+    "isComponent": true,
+    "isChart": false,
+    "name": "USD"
   }
 }
