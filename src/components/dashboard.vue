@@ -242,18 +242,24 @@ export default {
       // when user clicks the save layout button, the custom layout is saved to local storage and database.
       let dashboard;
       // save dashboard to local storage
-      localStorageManager.set("layoutData", this.currentLayoutObj);
+      let curLayout = {...this.currentLayoutObj}
+      for (let key in curLayout) {
+        delete curLayout[key]?.dataProp;
+        delete curLayout[key]?.moved;
+      }
+
+      localStorageManager.set("layoutData", curLayout);
       try {
         if (this.userDashboardId) {
           console.log("update");
           // update
           dashboard = await api.put(`/dashboard/${this.userDashboardId}`, {
-            layout: this.currentLayoutObj,
+            layout: curLayout,
           });
         } else {
           console.log("create");
           dashboard = await api.post("/dashboard", {
-            layout: this.currentLayoutObj,
+            layout: curLayout,
           });
           this.userDashboardId = dashboard.uid;
         }
@@ -358,7 +364,7 @@ export default {
 
     loadFromDefault: function() {
       // load layout from default layout.
-      var self = this;
+      let self = this;
       // create a deep copy of the layout object.
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
