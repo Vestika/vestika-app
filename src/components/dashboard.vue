@@ -273,6 +273,7 @@ export default {
     async loadUserLayout() {
       this.currentLayoutObj = await this.loadLayout();
       localStorageManager.set("layoutData", this.currentLayoutObj);
+      this.setLayout();
       this.updateLayoutList();
     },
 
@@ -360,6 +361,16 @@ export default {
           chart.setSize(cont.width, cont.height, false);
         }
       });
+    },
+
+    setLayout: function() {
+      // load layout from default layout.
+      let self = this;
+      // create a deep copy of the layout object.
+      this.currentLayoutObj = localStorageManager.get("layoutData");
+      for (const [, layoutData] of Object.entries(this.currentLayoutObj)) {
+        layoutData.dataProp = self.dashboardData[layoutData.name];
+      }
     },
 
     loadFromDefault: function() {
