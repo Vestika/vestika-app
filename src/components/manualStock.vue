@@ -14,7 +14,7 @@
           :items="symbols"
           label="Symbol"
           placeholder="Select symbol"
-          v-model="symbols[0]"
+          v-model="manualStockObject.symbol"
         ></v-autocomplete>
         <v-menu
           v-model="menu"
@@ -29,7 +29,7 @@
             style="background-color: blue !important;"
           >
             <v-text-field
-              v-model="purchaseDate"
+              v-model="manualStockObject.date_of_purchase"
               required
               label="Purchase Date"
               append-icon="mdi-calendar"
@@ -40,7 +40,7 @@
           </template>
           <v-date-picker
             :max="new Date().toISOString().split('T')[0]"
-            v-model="purchaseDate"
+            v-model="manualStockObject.date_of_purchase"
             @input="menu = false"
           >
           </v-date-picker>
@@ -54,10 +54,10 @@
           required
           ref="input"
           :rules="[numberRule]"
-          v-model.number="units"
+          v-model.number="manualStockObject.units"
         ></v-text-field>
         <v-text-field
-          v-model="purchasePrice"
+          v-model="manualStockObject.purchase_price"
           label="Purchase Price"
           hint="If not specified, stock price at purchase date will be taken."
           type="number"
@@ -76,11 +76,7 @@
           Cancel
         </v-btn>
 
-        <v-btn
-          color="var(--v-mainTheme-base)"
-          text
-          @click="closeManualStockDialog()"
-        >
+        <v-btn color="var(--v-mainTheme-base)" text @click="saveManualStock()">
           Save
         </v-btn>
       </v-card-actions>
@@ -90,6 +86,8 @@
 
 <script>
 import { SYMBOLS } from "@/utils/constants";
+import api from "@/utils/api";
+import localStorageManager from "@/utils/localStorage";
 
 export default {
   computed: {
@@ -98,6 +96,10 @@ export default {
     },
   },
 
+  async created() {
+    this.symbols = await api.get("/portfolios/symbols")
+    this.symbol = this.symbols[0]
+  },
   props: {
     dialog: {
       type: Boolean,
@@ -105,28 +107,40 @@ export default {
     },
   },
 
+  methods: {
+    saveManualStock() {
+      try {
+        api.post("/portfolios/stock", this.manualStockObject);
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+      this.closeManualStockDialog();
+    },
+    closeManualStockDialog() {
+      this.$emit("close");
+    },
+  },
+
   data() {
     return {
-      units: 0,
-      purchasePrice: undefined,
-      purchaseDate: new Date(
-        Date.now() - new Date().getTimezoneOffset() * 60000,
-      )
-        .toISOString()
-        .substr(0, 10),
+      symbols: [],
+      manualStockObject: {
+        symbol: '',
+        purchase_price: undefined,
+        date_of_purchase: new Date(
+          Date.now() - new Date().getTimezoneOffset() * 60000,
+        )
+          .toISOString()
+          .substr(0, 10),
+        units: 0,
+      },
+      menu: false,
       numberRule: val => {
         if (val < 0) return "Please enter a positive number";
         return true;
       },
-      menu: false,
-      symbols: SYMBOLS,
     };
-  },
-
-  methods: {
-    closeManualStockDialog() {
-      this.$emit("close");
-    },
   },
 };
 </script>
