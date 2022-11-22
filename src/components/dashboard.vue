@@ -221,6 +221,7 @@ export default {
       this.currentLayoutObj = this.defaultLayoutObj;
       this.updateLayoutList();
       this.hiddenBoxes = [];
+      localStorageManager.set("layoutData", this.currentLayoutObj);
     },
 
     getLayoutMapper() {
@@ -239,10 +240,8 @@ export default {
     },
 
     async saveUserLayout() {
-      // when user clicks the save layout button, the custom layout is saved to local storage and database.
+      // when user clicks the save layout button, the custom layout is saved to database.
       let dashboard;
-      // save dashboard to local storage
-      localStorageManager.set("layoutData", this.currentLayoutObj);
       let curLayout = {...this.currentLayoutObj}
       for (let key in curLayout) {
         delete curLayout[key]?.dataProp;
