@@ -6,7 +6,7 @@
 
 <script>
 import filepondUploader from "@/components/filepondUploader.vue";
-import {growthbook} from "../utils/featureFlag";
+import { growthbook } from "../utils/featureFlag";
 
 export default {
   name: "mainUploader",

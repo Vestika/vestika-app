@@ -25,7 +25,7 @@ import api from "@/utils/api.js";
 import { messages } from "@/components/messages.json";
 
 import "filepond/dist/filepond.min.css";
-import {growthbook} from "../utils/featureFlag";
+import { growthbook } from "../utils/featureFlag";
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,

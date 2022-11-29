@@ -10,6 +10,17 @@
     fixed-header
     style="height: 100%"
   >
+    <template #[`header.actions`]="{ header }">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon v-on="on" v-bind="attrs" small @click="showManualStockDialog"
+            >mdi-plus-circle</v-icon
+          >{{ header.text }}
+        </template>
+        <span>Add Stock Manually</span>
+      </v-tooltip>
+    </template>
+
     <template #[`item.name`]="{ item }">
       <v-btn block text :href="item.url" target="_blank">
         {{ item.name }}
@@ -95,7 +106,14 @@ export default {
 
     return {
       daysBack: daysBack,
+      dialog: false,
       headers: [
+        {
+          text: "",
+          value: "actions",
+          sortable: false,
+          width: "10px",
+        },
         {
           text: "Instrument",
           align: "center",
@@ -114,6 +132,9 @@ export default {
   methods: {
     instOverTime(inst_over_time) {
       return inst_over_time.slice(-this.daysBack);
+    },
+    showManualStockDialog() {
+      this.$emit("show-manual-stock-dialog");
     },
   },
 };
