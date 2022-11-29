@@ -97,8 +97,8 @@ export default {
   },
 
   async created() {
-    this.symbols = await api.get("/portfolios/symbols")
-    this.symbol = this.symbols[0]
+    this.symbols = await api.get("/portfolios/symbols");
+    this.symbol = this.symbols[0];
   },
   props: {
     dialog: {
@@ -126,7 +126,7 @@ export default {
     return {
       symbols: [],
       manualStockObject: {
-        symbol: '',
+        symbol: "",
         purchase_price: undefined,
         date_of_purchase: new Date(
           Date.now() - new Date().getTimezoneOffset() * 60000,
