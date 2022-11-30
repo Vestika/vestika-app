@@ -254,7 +254,7 @@ export default {
     async saveUserLayout() {
       // when user clicks the save layout button, the custom layout is saved to database.
       let dashboard;
-      let curLayout = {...this.currentLayoutObj}
+      let curLayout = { ...this.currentLayoutObj };
       for (let key in curLayout) {
         delete curLayout[key]?.dataProp;
         delete curLayout[key]?.moved;
@@ -439,7 +439,13 @@ export default {
       return assetsArray;
     },
 
-    setNumberBox(data, name, color = "var(--v-success-base)", fixed = 0, symbol = 0x20aa) {
+    setNumberBox(
+      data,
+      name,
+      color = "var(--v-success-base)",
+      fixed = 0,
+      symbol = 0x20aa,
+    ) {
       return {
         number:
           String.fromCharCode(symbol) // NIS symbol
@@ -503,19 +509,19 @@ export default {
       );
 
       this.dashboardData["Cash Balance"] = this.setNumberBox(
-          this.portfolios.balance.value,
+        this.portfolios.balance.value,
         "Cash Balance",
-          "rgba(255, 255, 255, 0.2)",
-          2,
-      )
+        "rgba(255, 255, 255, 0.2)",
+        2,
+      );
 
       this.dashboardData["USD"] = this.setNumberBox(
-          this.portfolios.currency_usd.value,
+        this.portfolios.currency_usd.value,
         "USD",
-          "rgba(255, 255, 255, 0.2)",
-          2,
-          0x24,
-      )
+        "rgba(255, 255, 255, 0.2)",
+        2,
+        0x24,
+      );
 
       await this.loadUserLayout();
     },
