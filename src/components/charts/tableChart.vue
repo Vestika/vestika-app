@@ -166,7 +166,6 @@ export default {
           value: "actions",
           sortable: false,
           width: "10px",
-          align: 'center',
         },
         {
           text: "Instrument",
