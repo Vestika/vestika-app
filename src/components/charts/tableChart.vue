@@ -4,11 +4,15 @@
     :items="data"
     :sort-by="['name']"
     :sort-desc="[false, true]"
+    item-key="name"
     hide-default-footer
     disable-pagination
     class="transparent"
     fixed-header
     style="height: 100%"
+    show-expand
+    @click:row="(item, slot) => slot.expand(!slot.isExpanded)"
+    :expanded.sync="expanded"
   >
     <template #[`header.actions`]="{ header }">
       <v-tooltip bottom>
@@ -19,6 +23,48 @@
         </template>
         <span>Add Stock Manually</span>
       </v-tooltip>
+    </template>
+
+    <template v-slot:expanded-item="{ item: ParentItem }">
+      <td :colspan="headers.length" style="padding: 0px">
+        <v-data-table
+          id="nestedTable"
+          :headers="nestedHeaders"
+          :items="ParentItem.transactions"
+          :sort-by="['name']"
+          :sort-desc="[false, true]"
+          item-key="name"
+          hide-default-footer
+          disable-pagination
+          class="alternativeBackground"
+          fixed-header
+        >
+          <template #[`item.date_at_purchase`]="{ item }">
+            {{ item.date_at_purchase }}
+          </template>
+          <template #[`item.price_at_purchase`]="{ item }">
+            {{
+              (isNaN(ParentItem.symbol) ? "$" : "₪") +
+                item.price_at_purchase
+                  .toFixed(2)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }}
+          </template>
+          <template #[`item.units`]="{ item }">
+            {{ item.units }}
+          </template>
+          <template #[`item.cost`]="{ item }">
+            {{
+              (isNaN(ParentItem.symbol) ? "$" : "₪") +
+                item.cost
+                  .toFixed()
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }}
+          </template>
+        </v-data-table>
+      </td>
     </template>
 
     <template #[`item.name`]="{ item }">
@@ -107,6 +153,13 @@ export default {
     return {
       daysBack: daysBack,
       dialog: false,
+      expanded: [],
+      nestedHeaders: [
+        { text: "Date of Purchase", value: "date_at_purchase", align: 'center' },
+        { text: "price at Purchase", value: "price_at_purchase", align: 'center' },
+        { text: "Units", value: "units" , align: 'center' },
+        { text: "Cost", value: "cost", align: 'center' },
+      ],
       headers: [
         {
           text: "",
@@ -126,6 +179,7 @@ export default {
         { text: "Return (₪)", value: "net_change" },
         { text: "Return (%)", value: "percent_change" },
         { text: "Last " + daysBack + " days", value: "chart", sortable: false },
+        { text: "", value: "data-table-expand" },
       ],
     };
   },

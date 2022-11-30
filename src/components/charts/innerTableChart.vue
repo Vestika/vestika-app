@@ -1,5 +1,7 @@
 <template>
-  <vue-highcharts ref="sparkline" :options="chartOptions" />
+  <div>
+    <vue-highcharts ref="sparkline" :options="chartOptions" />
+  </div>
 </template>
 
 <script>
@@ -40,7 +42,8 @@ export default {
       return {
         chart: {
           margin: [0, 0, 0, 0],
-          width: 200,
+          width: 150,
+          height: 30,
           backgroundColor: "transparent",
         },
         title: {

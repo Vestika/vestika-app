@@ -10,6 +10,7 @@ export default new Vuetify({
     themes: {
       dark: {
         background: "#0D1F2D",
+        alternativeBackground: "#233443",
         topBar: "#28292D",
         upload: "#1A1A1A",
         uploadHover: "#28292D",
