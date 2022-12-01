@@ -112,6 +112,7 @@ export default {
       if (user_info_obj.profile_picture_url) {
         this.avatarImageSrc = user_info_obj.profile_picture_url;
       } else {
+        this.avatarImageSrc = AVATAR_DEFAULT_IMAGE
         this.user_info.profile_picture_url = this.avatarImageSrc;
       }
       localStorageManager.set("user_info", user_info_obj);
@@ -146,7 +147,7 @@ export default {
           .substr(0, 10),
       },
       avatarImageFile: null,
-      avatarImageSrc: AVATAR_DEFAULT_IMAGE,
+      avatarImageSrc: '',
       user_info: {
         country: null,
         name: null,
