@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import viewDashboard from "@/views/mainContent.vue";
 import mainUploader from "@/components/mainUploader.vue";
-import feed from "@/components/feed.vue";
 import registration from "@/views/registration.vue";
 import { auth } from "@/firebase.js";
 import userProfile from "@/components/userProfile";
@@ -22,15 +21,6 @@ const routes = [
     path: "/",
     name: "Dashboard",
     component: viewDashboard,
-    props: true,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/feed",
-    name: "Feed",
-    component: feed,
     props: true,
     meta: {
       requiresAuth: true,

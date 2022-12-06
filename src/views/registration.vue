@@ -9,7 +9,13 @@
                 <v-col xs="12" md="6" lg="6" order="0">
                   <welcome-page-image></welcome-page-image>
                 </v-col>
-                <v-col xs="12" md="6" lg="6" order="1">
+                <v-col
+                  xs="12"
+                  md="6"
+                  lg="6"
+                  order="1"
+                  style="border: 1px solid rgba(255, 255, 255, 0.2);"
+                >
                   <login :views="views" @new-view="updateView"></login>
                 </v-col>
               </v-row>

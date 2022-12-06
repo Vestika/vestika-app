@@ -15,7 +15,6 @@
               <v-list-item-title style="font-size: 20px"
                 >Reminders</v-list-item-title
               >
-              <calendar></calendar>
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="pa-0">
@@ -41,12 +40,11 @@
 </template>
 
 <script>
-import Calendar from "@/components/calendar.vue";
 import notesList from "@/components/notesList.vue";
 import goalsList from "@/components/goalsList/goalsList.vue";
 
 export default {
-  components: { Calendar, notesList, goalsList },
+  components: { notesList, goalsList },
   data() {
     return {
       drawer: true,

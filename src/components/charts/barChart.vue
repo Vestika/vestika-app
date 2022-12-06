@@ -16,6 +16,7 @@ export default {
   components: {
     VueHighcharts,
   },
+
   props: {
     data: {
       type: Object,
@@ -113,9 +114,6 @@ export default {
         ],
       };
     },
-  },
-  data() {
-    return {};
   },
 };
 </script>

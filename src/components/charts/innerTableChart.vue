@@ -121,7 +121,7 @@ export default {
           [1, "rgba(0, 0, 0, 0)"],
         ],
       };
-      var series = this.$refs.sparkline.chart.series[0];
+      const series = this.$refs.sparkline.chart.series[0];
       if (
         this.dataArray[0].value
         > this.dataArray[this.dataArray.length - 1].value
