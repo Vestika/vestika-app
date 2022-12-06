@@ -16,11 +16,12 @@ export default {
   components: {
     VueHighcharts,
   },
+
   props: {
     data: {
-      type: Array,
+      type: Object,
       default: function() {
-        return [];
+        return {};
       },
     },
     chartName: {
@@ -46,7 +47,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          categories: this.getDates(),
+          categories: this.data.dates,
           labels: {
             autoRotation: 0,
             style: {
@@ -71,7 +72,7 @@ export default {
             },
           },
         },
-        series: this.prepareData(),
+        series: this.data.dividends_value,
         colors: this.$vuetify.theme.themes.dark.chartColors,
         legend: {
           floating: true,
@@ -116,70 +117,6 @@ export default {
           },
         },
       };
-    },
-  },
-
-  data() {
-    return {};
-  },
-
-  methods: {
-    parseDate: function(date_str) {
-      const cur_date = new Date(date_str);
-      return cur_date.toLocaleString("en", { year: "2-digit", month: "short" });
-    },
-    getDates: function() {
-      // assumes data is sorted by date.
-      // date duplicates are allowed.
-      const dates = [];
-      if (!this.data) {
-        return [];
-      }
-      for (let i = 0; i < this.data.length; i++) {
-        const str_date = this.parseDate(this.data[i].date);
-
-        // check that the current date isn't already in the array (last element)
-        if (dates.slice(-1)[0] !== str_date) {
-          dates.push(str_date);
-        }
-      }
-      return dates;
-    },
-    prepareData: function() {
-      if (!this.data) {
-        return [];
-      }
-
-      const dates = this.getDates();
-
-      const result = {};
-
-      let date_counter = 0;
-
-      for (let j = 0; j < this.data.length; j++) {
-        const curr_date = this.parseDate(this.data[j].date);
-        const symbol = this.data[j].name;
-        const amount = this.data[j].value;
-
-        let prev_date = dates[date_counter];
-
-        if (curr_date !== prev_date) {
-          date_counter += 1;
-          prev_date = dates[date_counter];
-        }
-
-        if (!(symbol in result)) {
-          result[symbol] = new Array(dates.length).fill(0);
-        }
-
-        result[symbol][date_counter] += amount;
-      }
-
-      const output = [];
-      for (const [key, value] of Object.entries(result)) {
-        output.push({ name: key, data: value });
-      }
-      return output;
     },
   },
 };

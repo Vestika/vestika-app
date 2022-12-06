@@ -19,6 +19,16 @@ class localStorageManager {
     }
   }
 
+  update_dict(key, data) {
+    if (!this.has(key)) {
+      this.set(key, data);
+      return data;
+    }
+    const updated_dict = { ...this.get(key), ...data };
+    this.set(key, updated_dict);
+    return updated_dict;
+  }
+
   delete(key) {
     localStorage.removeItem(key);
   }

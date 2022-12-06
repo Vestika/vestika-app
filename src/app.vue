@@ -102,16 +102,15 @@ export default {
     },
 
     async DownloadAvatarImage() {
-      console.log("Downloading Avatar Image")
+      console.log("Downloading Avatar Image");
       try {
         var profilePictureUrl = await api.get(
-            "/users/download_profile_picture_signed_url",
+          "/users/download_profile_picture_signed_url",
         );
         this.changeProfilePicture(profilePictureUrl);
         this.user_info_obj.profile_picture_url = this.profilePictureUrl;
         localStorageManager.set("user_info", this.user_info_obj);
-      }
-      catch (error) {
+      } catch (error) {
         this.profilePictureUrl = AVATAR_DEFAULT_IMAGE;
       }
     },
@@ -129,9 +128,8 @@ export default {
         this.profilePictureUrl = user_info_obj.profile_picture_url;
         this.user_info_obj = user_info_obj;
         localStorageManager.set("user_info", this.user_info_obj);
-      }
-      else {
-        await this.DownloadAvatarImage()
+      } else {
+        await this.DownloadAvatarImage();
       }
     },
   },

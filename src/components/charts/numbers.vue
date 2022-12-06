@@ -7,7 +7,7 @@
         {{ data.title }}
       </span>
       <h1 class="text-center" :style="{ color: data.color }">
-        {{ data.number }}
+        {{ getValue }}
       </h1>
     </div>
   </v-container>
@@ -16,12 +16,16 @@
 <script>
 export default {
   name: "numbers",
+
   props: {
     data: {
       type: Object,
-      default: function() {
-        return {};
-      },
+    },
+  },
+
+  computed: {
+    getValue() {
+      return this.data.number;
     },
   },
 };
