@@ -376,7 +376,7 @@ export default {
 
     setLayout: function() {
       // load layout from default layout.
-      let self = this;
+      const self = this;
       // create a deep copy of the layout object.
       this.currentLayoutObj = localStorageManager.get("layoutData");
       for (const [, layoutData] of Object.entries(this.currentLayoutObj)) {
@@ -386,7 +386,7 @@ export default {
 
     loadFromDefault: function() {
       // load layout from default layout.
-      let self = this;
+      const self = this;
       // create a deep copy of the layout object.
       this.defaultLayoutObj = JSON.parse(JSON.stringify(defaultLayout));
       for (const [, layoutData] of Object.entries(this.defaultLayoutObj)) {
@@ -396,6 +396,7 @@ export default {
 
     updateLayoutList() {
       // when layout object changes, it will update the layout list.
+      const self = this;
       this.currentLayoutArr = [];
       for (const [, layout_data] of Object.entries(this.currentLayoutObj)) {
         if (
@@ -405,10 +406,15 @@ export default {
           continue;
         }
         this.currentLayoutArr.push(layout_data);
+        layout_data.dataProp = self.dashboardData[layout_data.name];
       }
     },
 
-    parseNetWorthOverTime(graphData) {
+    parseNetWorthOverTime() {
+      if (this.portfolios.net_over_time == null) {
+        return [];
+      }
+      const graphData = this.portfolios.net_over_time.data;
       console.log(graphData);
       let len = graphData.length;
       let result = [];
@@ -418,9 +424,14 @@ export default {
       return result;
     },
 
-    parseCommissions(commissionsData) {
-      let arrayLength = commissionsData.length;
-      for (let i = 0; i < arrayLength; i++) {
+    parseCommissions() {
+      if (this.portfolios.commissions == null) {
+        return { names: [], values: [] };
+      }
+
+      const commissionsData = JSON.parse(this.portfolios.commissions).data;
+
+      for (let i = 0; i < commissionsData.length; i++) {
         this.commissionsNames[i] = commissionsData[i].name;
         this.commissionsValues[i] = commissionsData[i].value;
       }
@@ -430,99 +441,115 @@ export default {
       };
     },
 
-    parseAssets(assetsData) {
-      let assetsArray = [];
-      let arrayLength = assetsData.length;
-      for (let j = 0; j < arrayLength; j++) {
-        assetsArray[j] = [assetsData[j].name, assetsData[j].value];
+    parseAssets() {
+      if (this.portfolios.assets == null) {
+        return [];
+      }
+
+      const assetsData = this.portfolios.assets;
+      const assetsArray = [];
+
+      for (let i = 0; i < assetsData.length; i++) {
+        assetsArray[i] = [assetsData[i].name, assetsData[i].value];
       }
       return assetsArray;
+    },
+
+    parseDividends() {
+      if (this.portfolios.dividends == null) {
+        return {};
+      }
+      return this.portfolios.dividends;
+    },
+
+    parseTable() {
+      if (this.portfolios.instruments == null) {
+        return [];
+      }
+      return this.portfolios.instruments.data;
     },
 
     setNumberBox(
       data,
       name,
       color = "var(--v-success-base)",
-      fixed = 0,
-      symbol = 0x20aa,
+      decimalPlaces = 0,
+      prefix = String.fromCharCode(0x20aa), // NIS symbol
+      suffix = "",
     ) {
-      return {
-        number:
-          String.fromCharCode(symbol) // NIS symbol
-          + data
-            .toFixed(fixed)
+      let value = "n/a";
+      if (data != null) {
+        value
+          = prefix
+          + data.value
+            .toFixed(decimalPlaces)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            .toString(),
+            .toString()
+          + suffix;
+      }
+      return {
+        number: value,
         color: color,
         title: name,
       };
     },
 
-    getNetPercent(percentChangeData) {
-      return {
-        number: percentChangeData.toFixed(2).toString() + "%",
-        color: "var(--v-success-base)",
-        title: "%Return",
-      };
-    },
-
-    async onPageLoad() {
-      console.log(this.portfolios);
-      this.updateChartsSize();
-
-      this.dashboardData["Assets"] = this.parseAssets(
-        this.portfolios.assets.data,
-      );
-      this.dashboardData[
-        "Net Change No Div"
-      ] = this.portfolios.net_change_no_dividends.value;
-      this.dashboardData["Dividends"] = this.portfolios.dividends.data;
-      this.dashboardData["Instrument Table"] = this.portfolios.instruments.data;
-      this.dashboardData["Value Over Time"] = this.parseNetWorthOverTime(
-        this.portfolios.net_over_time.data,
-      );
-      this.dashboardData["Commissions"] = this.parseCommissions(
-        this.portfolios.commissions.data,
-      );
+    parseDashboardData() {
+      this.dashboardData["Assets"] = this.parseAssets();
+      // this.dashboardData["Net Change No Div"] = this.portfolios.net_change_no_dividends;
+      this.dashboardData["Dividends"] = this.parseDividends();
+      this.dashboardData["Instrument Table"] = this.parseTable();
+      this.dashboardData["Value Over Time"] = this.parseNetWorthOverTime();
+      this.dashboardData["Commissions"] = this.parseCommissions();
 
       this.dashboardData["Value"] = this.setNumberBox(
-        this.portfolios.net_worth.value,
+        this.portfolios.net_worth,
         "Value",
       );
 
       // Return value includes earnings from dividends
       this.dashboardData["Return"] = this.setNumberBox(
-        this.portfolios.net_change_with_dividends.value,
+        this.portfolios.net_change_with_dividends,
         "Return",
       );
 
-      this.dashboardData["%Return"] = this.getNetPercent(
-        this.portfolios.percent_change.value,
+      this.dashboardData["%Return"] = this.setNumberBox(
+        this.portfolios.percent_change,
+        "%Return",
+        "var(--v-success-base)",
+        2,
+        "",
+        "%",
       );
-      this.dashboardData["Upload Box"] = this.uploadStatus;
 
       this.dashboardData["USD/ILS"] = this.setNumberBox(
-        this.portfolios.usd_ils.value,
+        this.portfolios.usd_ils,
         "USD/ILS",
         "rgba(255, 255, 255, 0.2)",
         3,
       );
 
       this.dashboardData["Cash Balance"] = this.setNumberBox(
-        this.portfolios.balance.value,
+        this.portfolios.balance,
         "Cash Balance",
         "rgba(255, 255, 255, 0.2)",
         2,
       );
 
       this.dashboardData["USD"] = this.setNumberBox(
-        this.portfolios.currency_usd.value,
+        this.portfolios.currency_usd,
         "USD",
         "rgba(255, 255, 255, 0.2)",
         2,
-        0x24,
+        "$",
       );
+    },
 
+    async onPageLoad() {
+      console.log("Displaying:");
+      console.log(this.portfolios);
+      this.updateChartsSize();
+      this.parseDashboardData();
       await this.loadUserLayout();
     },
 

@@ -46,7 +46,7 @@ export default {
 
     if (!localStorageManager.has(PORTFOLIO_DATA)) {
       console.log("Getting data.");
-      this.getPortfolioData();
+      api.get("/portfolios/parts");
       return;
     }
 
@@ -57,7 +57,7 @@ export default {
     } catch (e) {
       console.error("Failed parsing, clearing storage.");
       localStorageManager.clear();
-      this.getPortfolioData();
+      api.get("/portfolios/parts");
     }
   },
 
@@ -92,28 +92,21 @@ export default {
       const self = this;
       ws.onmessage = async function(event) {
         console.log("WebSocket: Received:", event);
-        self.portfolios = JSON.parse(event.data);
-        self.hasData = true;
-        self.$emit("app-loading", false);
 
-        localStorageManager.set(PORTFOLIO_DATA, self.portfolios);
+        self.portfolios = localStorageManager.update_dict(
+          PORTFOLIO_DATA,
+          JSON.parse(event.data),
+        );
+        self.hasData = true;
         console.log("Portfolio data saved to LocalStorage.");
+
+        self.$emit("app-loading", false);
       };
     },
 
     finalizeDataFetch() {
       this.hasData = !!this.portfolios;
       this.$emit("app-loading", false);
-    },
-
-    async getPortfolioData() {
-      try {
-        this.portfolios = await api.get("/portfolios");
-        localStorageManager.set(PORTFOLIO_DATA, this.portfolios);
-      } catch (error) {
-        localStorageManager.delete(PORTFOLIO_DATA);
-      }
-      this.finalizeDataFetch();
     },
 
     handleFileUploaded() {

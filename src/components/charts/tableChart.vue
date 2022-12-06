@@ -155,10 +155,18 @@ export default {
       dialog: false,
       expanded: [],
       nestedHeaders: [
-        { text: "Date of Purchase", value: "date_at_purchase", align: 'center' },
-        { text: "price at Purchase", value: "price_at_purchase", align: 'center' },
-        { text: "Units", value: "units" , align: 'center' },
-        { text: "Cost", value: "cost", align: 'center' },
+        {
+          text: "Date of Purchase",
+          value: "date_at_purchase",
+          align: "center",
+        },
+        {
+          text: "price at Purchase",
+          value: "price_at_purchase",
+          align: "center",
+        },
+        { text: "Units", value: "units", align: "center" },
+        { text: "Cost", value: "cost", align: "center" },
       ],
       headers: [
         {
