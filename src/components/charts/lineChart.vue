@@ -5,16 +5,16 @@
     >
       {{ chartName }}
     </span>
-    <vue-highcharts
+    <highcharts
+      :constructorType="'stockChart'"
+      class="hc"
       ref="lineChart"
       :options="chartOptions"
-      :highcharts="Highcharts"
-    />
+    ></highcharts>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
 import customEvents from "highcharts-custom-events";
 import Highcharts from "highcharts/highstock";
 
@@ -28,9 +28,6 @@ Highcharts.setOptions({
 });
 
 export default {
-  components: {
-    VueHighcharts,
-  },
   props: {
     data: {
       type: Array,
@@ -48,6 +45,15 @@ export default {
     },
   },
 
+  watch: {
+    data: {
+      handler(newOptions) {
+        this.chartOptions.series[0].data = newOptions;
+      },
+      deep: true,
+    },
+  },
+
   computed: {
     zoomType() {
       if (this.isLocked) {
@@ -56,10 +62,14 @@ export default {
         return "";
       }
     },
+  },
 
-    chartOptions() {
-      var cloneToolTip = null;
-      return {
+  data() {
+    var cloneToolTip = null;
+    return {
+      Highcharts: Highcharts,
+      chartRef: undefined,
+      chartOptions: {
         chart: {
           marginTop: 40,
           zoomType: this.zoomType,
@@ -346,16 +356,10 @@ export default {
             threshold: null,
           },
         ],
-      };
-    },
-  },
-
-  data() {
-    return {
-      chartRef: undefined,
-      Highcharts: Highcharts,
+      },
     };
   },
+
   mounted() {
     this.chartRef = this.$refs.lineChart.chart;
     this.initialExtremeX = this.chartRef.xAxis[0].getExtremes();
@@ -406,5 +410,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
+}
+.hc {
+  height: 100% !important;
 }
 </style>

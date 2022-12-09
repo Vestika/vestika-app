@@ -5,18 +5,12 @@
     >
       {{ chartName }}
     </span>
-    <vue-highcharts ref="barChart" :options="chartOptions" />
+    <highcharts class="hc" ref="barChart" :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
-
 export default {
-  components: {
-    VueHighcharts,
-  },
-
   props: {
     data: {
       type: Object,
@@ -30,9 +24,19 @@ export default {
     },
   },
 
-  computed: {
-    chartOptions() {
-      return {
+  watch: {
+    data: {
+      handler(newOptions) {
+        this.chartOptions.series[0].data = newOptions.values;
+        this.chartOptions.xAxis.data = newOptions.names;
+      },
+      deep: true,
+    },
+  },
+
+  data() {
+    return {
+      chartOptions: {
         chart: {
           marginTop: 40,
           type: "column",
@@ -97,23 +101,23 @@ export default {
               enabled: true,
               inside: true,
               format: "{y:,.0f}",
-              animation: {
-                defer: 6000,
-              },
               style: {
                 fontWeight: "bold",
                 fontSize: "12px",
                 textOutline: "0px contrast",
               },
             },
-            animation: {
-              defer: 3000,
-            },
             data: this.data.values,
           },
         ],
-      };
-    },
+      },
+    };
   },
 };
 </script>
+
+<style>
+.hc {
+  height: 100% !important;
+}
+</style>

@@ -5,25 +5,17 @@
     >
       {{ chartName }}
     </span>
-    <vue-highcharts
-      ref="pieChart"
-      :options="chartOptions"
-      :highcharts="Highcharts"
-    />
+    <highcharts class="hc" ref="pieChart" :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
 import Highcharts3D from "highcharts/highcharts-3d";
 import Highcharts from "highcharts";
 
 Highcharts3D(Highcharts);
 
 export default {
-  components: {
-    VueHighcharts,
-  },
   props: {
     data: {
       type: Array,
@@ -36,10 +28,18 @@ export default {
       default: "",
     },
   },
+  watch: {
+    data: {
+      handler(newOptions) {
+        this.chartOptions.series[0].data = newOptions;
+      },
+      deep: true,
+    },
+  },
 
-  computed: {
-    chartOptions() {
-      return {
+  data() {
+    return {
+      chartOptions: {
         chart: {
           margin: [0, 10, 20, 10],
           type: "pie",
@@ -87,14 +87,14 @@ export default {
             colors: this.$vuetify.theme.themes.dark.chartColors,
           },
         ],
-      };
-    },
-  },
-
-  data() {
-    return {
-      Highcharts,
+      },
     };
   },
 };
 </script>
+
+<style>
+.hc {
+  height: 100% !important;
+}
+</style>

@@ -5,18 +5,16 @@
     >
       {{ chartName }}
     </span>
-    <vue-highcharts ref="stackedBarChart" :options="chartOptions" />
+    <highcharts
+      class="hc"
+      ref="stackedBarChart"
+      :options="chartOptions"
+    ></highcharts>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
-
 export default {
-  components: {
-    VueHighcharts,
-  },
-
   props: {
     data: {
       type: Object,
@@ -30,9 +28,20 @@ export default {
     },
   },
 
-  computed: {
-    chartOptions() {
-      return {
+  watch: {
+    data: {
+      handler(newOptions) {
+        this.chartOptions.series = newOptions.dividends_value;
+        this.chartOptions.xAxis.categories = newOptions.dates;
+      },
+      deep: true,
+    },
+  },
+
+  computed: {},
+  data() {
+    return {
+      chartOptions: {
         chart: {
           type: "column",
           marginTop: 40,
@@ -116,8 +125,14 @@ export default {
             },
           },
         },
-      };
-    },
+      },
+    };
   },
 };
 </script>
+
+<style>
+.hc {
+  height: 100% !important;
+}
+</style>

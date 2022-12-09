@@ -41,6 +41,10 @@
 </template>
 
 <script>
+import Vue from "vue";
+import HighchartsVue from "highcharts-vue";
+import Highcharts from "highcharts";
+import Stock from "highcharts/modules/stock";
 import Signup from "@/views/registration_windows/signup.vue";
 import RightSideBar from "@/components/rightSideBar.vue";
 import navBar from "@/components/navBar.vue";
@@ -48,6 +52,9 @@ import sideBar from "@/components/sideBar/sideBar.vue";
 import { messages } from "@/components/messages.json";
 import { AVATAR_DEFAULT_IMAGE } from "@/utils/constants";
 import api from "@/utils/api";
+
+Stock(Highcharts);
+Vue.use(HighchartsVue);
 
 const localStorageManager = require("./utils/localStorage");
 

@@ -92,12 +92,12 @@ export default {
       const self = this;
       ws.onmessage = async function(event) {
         console.log("WebSocket: Received:", event);
+        self.hasData = true;
 
         self.portfolios = localStorageManager.update_dict(
           PORTFOLIO_DATA,
           JSON.parse(event.data),
         );
-        self.hasData = true;
         console.log("Portfolio data saved to LocalStorage.");
 
         self.$emit("app-loading", false);
