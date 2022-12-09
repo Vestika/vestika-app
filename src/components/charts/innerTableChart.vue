@@ -1,17 +1,11 @@
 <template>
   <div>
-    <vue-highcharts ref="sparkline" :options="chartOptions" />
+    <highcharts ref="sparkline" :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
-import VueHighcharts from "vue2-highcharts";
-
 export default {
-  components: {
-    VueHighcharts,
-  },
-
   props: {
     dataArray: {
       type: Array,
@@ -23,23 +17,20 @@ export default {
   watch: {
     immediate: true,
     dataArray: {
-      handler() {
-        this.updateChartColor();
+      handler(newOptions) {
+        this.chartOptions.series[0].data = this.prepareData(newOptions);
+        this.updateChartColor(newOptions);
       },
     },
   },
 
   mounted() {
-    this.updateChartColor();
+    this.updateChartColor(this.dataArray);
   },
 
   data() {
-    return {};
-  },
-
-  computed: {
-    chartOptions() {
-      return {
+    return {
+      chartOptions: {
         chart: {
           margin: [0, 0, 0, 0],
           width: 150,
@@ -94,21 +85,23 @@ export default {
             type: "area",
             name: "price",
             fillOpacity: 0.25,
-            data: this.prepareData(),
+            data: this.prepareData(this.dataArray),
           },
         ],
-      };
-    },
+      },
+    };
   },
 
+  computed: {},
+
   methods: {
-    prepareData: function() {
-      return this.dataArray.map(function(obj) {
+    prepareData: function(options) {
+      return options.map(function(obj) {
         return obj.value;
       });
     },
 
-    updateChartColor() {
+    updateChartColor(options) {
       const fillColor = {
         linearGradient: {
           x1: 0,
@@ -122,10 +115,7 @@ export default {
         ],
       };
       const series = this.$refs.sparkline.chart.series[0];
-      if (
-        this.dataArray[0].value
-        > this.dataArray[this.dataArray.length - 1].value
-      ) {
+      if (options[0].value > options[options.length - 1].value) {
         fillColor.stops[0][1] = this.$vuetify.theme.themes.dark.error;
         series.update({ color: this.$vuetify.theme.themes.dark.error });
         series.update({ fillColor: fillColor });
