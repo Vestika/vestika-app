@@ -233,7 +233,6 @@ export default {
       this.currentLayoutObj = this.defaultLayoutObj;
       this.updateLayoutList();
       this.hiddenBoxes = [];
-      localStorageManager.set("layoutData", this.currentLayoutObj);
     },
 
     getLayoutMapper() {
@@ -254,7 +253,7 @@ export default {
     async saveUserLayout() {
       // when user clicks the save layout button, the custom layout is saved to database.
       let dashboard;
-      let curLayout = { ...this.currentLayoutObj };
+      let curLayout = JSON.parse(JSON.stringify(this.currentLayoutObj)); // deep clone of currentLayoutObj
       for (let key in curLayout) {
         delete curLayout[key]?.dataProp;
         delete curLayout[key]?.moved;
@@ -264,9 +263,20 @@ export default {
         if (this.userDashboardId) {
           console.log("update");
           // update
-          dashboard = await api.put(`/dashboard/${this.userDashboardId}`, {
-            layout: curLayout,
-          });
+          dashboard = await api.put(
+            `/dashboard`,
+            {
+              layout: curLayout,
+            },
+            {
+              params: {
+                entity_id: this.userDashboardId,
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
         } else {
           console.log("create");
           dashboard = await api.post("/dashboard", {
@@ -278,12 +288,12 @@ export default {
         console.log(error);
         return false;
       }
+      localStorageManager.set("layoutData", dashboard);
       console.log(dashboard);
     },
 
     async loadUserLayout() {
       this.currentLayoutObj = await this.loadLayout();
-      localStorageManager.set("layoutData", this.currentLayoutObj);
       this.setLayout();
       this.updateLayoutList();
     },
@@ -295,17 +305,16 @@ export default {
         dashboard = localStorageManager.get("layoutData");
         if (!dashboard) {
           dashboard = await api.get("/dashboard");
-          this.userDashboardId = dashboard.uid;
-          return dashboard.content.layout;
+          localStorageManager.set("layoutData", dashboard);
         }
+        this.userDashboardId = dashboard.uid;
+        return dashboard.content.layout;
       } catch (error) {
         if (error.response.status === 404) {
           this.loadFromDefault();
           return this.defaultLayoutObj;
         }
-        return {};
       }
-      return dashboard;
     },
 
     clearLocalStorage() {
@@ -375,10 +384,8 @@ export default {
     },
 
     setLayout: function() {
-      // load layout from default layout.
       const self = this;
       // create a deep copy of the layout object.
-      this.currentLayoutObj = localStorageManager.get("layoutData");
       for (const [, layoutData] of Object.entries(this.currentLayoutObj)) {
         layoutData.dataProp = self.dashboardData[layoutData.name];
       }

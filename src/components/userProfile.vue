@@ -85,15 +85,12 @@ import { FireGetUser } from "@/utils/firebase";
 
 import api from "@/utils/api";
 
-const localStorageManager = require("../utils/localStorage");
-
 export default {
   async created() {
     try {
-      var user_info_obj = localStorageManager.get("user_info");
       if (!user_info_obj) {
         try {
-          user_info_obj = await api.get("users");
+          var user_info_obj = await api.get("users");
         } catch (error) {
           console.log("No user data");
           if (error.response.status === 404) {
@@ -115,7 +112,6 @@ export default {
         this.avatarImageSrc = AVATAR_DEFAULT_IMAGE;
         this.user_info.profile_picture_url = this.avatarImageSrc;
       }
-      localStorageManager.set("user_info", user_info_obj);
     } catch (error) {
       console.log(error);
       return false;
@@ -183,7 +179,6 @@ export default {
       this.$emit("on-profile-image-change", profilePictureUrl);
       this.avatarImageSrc = profilePictureUrl;
       this.user_info.profile_picture_url = profilePictureUrl;
-      localStorageManager.set("user_info", this.user_info);
       return profilePictureUrl;
     },
 
@@ -220,18 +215,7 @@ export default {
       try {
         var user_info_obj = await api.get("users");
         var user_info_id = user_info_obj.uid;
-        if (user_info_id) {
-          console.log("updating user info data");
-          await api.put(`/users/}`, this.user_info, {
-            params: {
-              entity_id: user_info_id,
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          console.log("user info data was updated");
-        }
+        console.log(user_info_obj);
       } catch (error) {
         console.log(error);
         if (error.response.status === 404) {
@@ -246,8 +230,19 @@ export default {
           return false;
         }
       }
+      if (user_info_id) {
+        console.log("updating user info data");
+        await api.put(`/users`, this.user_info, {
+          params: {
+            entity_id: user_info_id,
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("user info data was updated");
+      }
       this.$emit("on-profile-image-change", this.user_info.profile_picture_url);
-      localStorageManager.set("user_info", this.user_info);
     },
 
     async Save() {
