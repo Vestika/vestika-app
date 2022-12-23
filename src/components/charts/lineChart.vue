@@ -6,11 +6,17 @@
       {{ chartName }}
     </span>
     <highcharts
+      v-show="this.data && this.data.length"
       :constructorType="'stockChart'"
       class="hc"
       ref="lineChart"
       :options="chartOptions"
     ></highcharts>
+    <v-skeleton-loader
+      v-show="!this.data || !this.data.length"
+      style="height: 100%"
+      type="image"
+    ></v-skeleton-loader>
   </div>
 </template>
 

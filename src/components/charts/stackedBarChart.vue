@@ -6,10 +6,16 @@
       {{ chartName }}
     </span>
     <highcharts
+      v-show="this.data && Object.keys(this.data).length"
       class="hc"
       ref="stackedBarChart"
       :options="chartOptions"
     ></highcharts>
+    <v-skeleton-loader
+      v-show="!this.data || !Object.keys(this.data).length"
+      style="height: 100%"
+      type="image"
+    ></v-skeleton-loader>
   </div>
 </template>
 

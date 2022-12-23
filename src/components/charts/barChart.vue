@@ -5,7 +5,27 @@
     >
       {{ chartName }}
     </span>
-    <highcharts class="hc" ref="barChart" :options="chartOptions"></highcharts>
+    <highcharts
+      v-show="
+        this.data &&
+          Object.keys(this.data).length &&
+          this.data.names.length &&
+          this.data.values.length
+      "
+      class="hc"
+      ref="barChart"
+      :options="chartOptions"
+    ></highcharts>
+    <v-skeleton-loader
+      v-show="
+        !this.data ||
+          !Object.keys(this.data).length ||
+          !this.data.names.length ||
+          !this.data.values.length
+      "
+      style="height: 100%"
+      type="image"
+    ></v-skeleton-loader>
   </div>
 </template>
 

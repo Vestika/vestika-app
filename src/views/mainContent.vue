@@ -1,7 +1,7 @@
 <template>
   <div style="padding-top: 15px">
     <mainUploader @file-uploaded="handleFileUploaded" />
-    <dashboard v-if="shouldDisplayDashbaord" :portfolios="portfolios" />
+    <dashboard :portfolios="portfolios" />
   </div>
 </template>
 
@@ -59,12 +59,6 @@ export default {
       localStorageManager.clear();
       api.get("/portfolios/parts");
     }
-  },
-
-  computed: {
-    shouldDisplayDashbaord() {
-      return this.hasData;
-    },
   },
 
   methods: {
