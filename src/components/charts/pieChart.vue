@@ -5,7 +5,17 @@
     >
       {{ chartName }}
     </span>
-    <highcharts class="hc" ref="pieChart" :options="chartOptions"></highcharts>
+    <highcharts
+      v-show="this.data && this.data.length"
+      class="hc"
+      ref="pieChart"
+      :options="chartOptions"
+    ></highcharts>
+    <v-skeleton-loader
+      v-show="!this.data || !this.data.length"
+      style="height: 100%"
+      type="image"
+    ></v-skeleton-loader>
   </div>
 </template>
 
@@ -96,5 +106,9 @@ export default {
 <style>
 .hc {
   height: 100% !important;
+}
+
+.v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 100%;
 }
 </style>
