@@ -15,6 +15,7 @@
     "@growthbook/growthbook": "^0.20.0",
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
+    "event-source-polyfill": "^1.0.31",
     "filepond": "^4.21.1",
     "filepond-plugin-file-poster": "^2.3.0",
     "filepond-plugin-file-validate-size": "^2.2.2",
