@@ -12,6 +12,7 @@ import mainUploader from "@/components/mainUploader.vue";
 import { FireGetUser } from "@/utils/firebase.js";
 import api from "@/utils/api.js";
 import { growthbook } from "../utils/featureFlag";
+import eventSourceApi from "../utils/eventsApi";
 
 const localStorageManager = require("../utils/localStorage");
 
@@ -41,6 +42,7 @@ export default {
   },
 
   created() {
+    this.eventSteam();
     this.createWebSocket();
     this.setFeatures();
 
@@ -67,6 +69,9 @@ export default {
       growthbook.setAttributes({
         id: user.id,
       });
+    },
+    async eventSteam() {
+      await eventSourceApi.connect();
     },
     async createWebSocket() {
       const user = await FireGetUser();
