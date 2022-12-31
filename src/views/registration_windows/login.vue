@@ -1,14 +1,16 @@
 <template>
-  <v-card-text>
+  <v-card-text class="mt-12">
     <h1
       class="text-center display-2 white--text text--accent-3 font-weight-light"
     >
-      Welcome
+      WELCOME
     </h1>
+    <br />
     <h3 class="text-center white--text ma-3 font-weight-light">
-      PLEASE LOGIN AND START EXPLORING
+      LOGIN AND START EXPLORING
     </h3>
-    <v-form class="pt-14 mb-0 shrink mx-13" @submit.prevent="signin(false)">
+
+    <v-form class="pt-7 mb-0 shrink mx-13" @submit.prevent="signin(false)">
       <v-text-field
         v-model="email"
         outlined
@@ -41,7 +43,6 @@
         />
         <v-btn
           text
-          style="font-size: 12px"
           class="noHover-btn white--text mr-n4 font-weight-light"
           data-cy="forgotPass"
           @click="$emit('new-view', views.resetPasswordView)"
@@ -55,9 +56,10 @@
           type="submit"
           data-cy="signin"
           class="buttons white--text font-weight-bold mr-2"
-          width="48%"
-          >LOGIN</v-btn
+          block
         >
+          LOGIN
+        </v-btn>
         <v-btn
           @click="signin(true)"
           v-if="false"
