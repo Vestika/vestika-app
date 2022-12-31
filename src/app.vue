@@ -32,7 +32,7 @@
         @app-loading="changeLoadingStatus"
       />
       <v-dialog v-model="showDialog" width="550px" overlay-color="overlayColor">
-        <v-card class="pa-7 registerCard">
+        <v-card class="pa-7">
           <signup @success-msg="showPopUp"></signup>
         </v-card>
       </v-dialog>

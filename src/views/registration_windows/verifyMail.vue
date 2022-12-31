@@ -1,5 +1,5 @@
 <template>
-  <v-card-text class="mt-12" align="center">
+  <v-card-text class="mt-12">
     <span class="material-icons green--text mb-16" style="font-size: 100px"
       >check_circle_outline</span
     >

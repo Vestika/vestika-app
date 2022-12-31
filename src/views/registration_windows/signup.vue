@@ -1,115 +1,114 @@
 <template>
-  <v-card elevation="0" class="registerCard">
-    <v-card-text>
-      <h1
-        class="text-center display-2 white--text text--accent-3 font-weight-light"
-      >
-        JOIN VESTIKA
-      </h1>
-      <h3 class="text-center white--text ma-3 font-weight-light">
-        PLEASE ENTER E-MAIL ADDRESS AND PASSWORD
-      </h3>
+  <v-card-text class="mt-12">
+    <h1
+      class="text-center display-2 white--text text--accent-3 font-weight-light"
+    >
+      JOIN VESTIKA
+    </h1>
+    <br />
+    <h3 class="text-center white--text ma-3 font-weight-light">
+      PLEASE ENTER E-MAIL ADDRESS AND PASSWORD
+    </h3>
 
-      <v-form
-        v-model="valid"
-        class="pt-7 mb-0 shrink mx-13"
-        ref="form"
-        @submit.prevent="signup"
+    <v-form
+      v-model="valid"
+      class="pt-7 mb-0 shrink mx-13"
+      ref="form"
+      @submit.prevent="signup"
+    >
+      <v-text-field
+        v-model="email"
+        outlined
+        autofocus
+        autocomplete="off"
+        dark
+        color="white"
+        type="email"
+        label="E-MAIL"
+        data-cy="emailInput"
+        prepend-inner-icon="mdi-account"
+        :rules="[rules.required, rules.emailRules]"
+      />
+      <v-text-field
+        v-model="password"
+        outlined
+        dark
+        color="white"
+        label="PASSWORD"
+        data-cy="password"
+        hint="At least 8 characters"
+        prepend-inner-icon="mdi-lock"
+        :rules="rules.passwordRules"
+        :type="showPassword ? 'text' : 'password'"
       >
-        <v-text-field
-          v-model="email"
-          outlined
-          autofocus
-          autocomplete="off"
-          dark
-          color="white"
-          type="email"
-          label="E-MAIL"
-          data-cy="emailInput"
-          prepend-inner-icon="mdi-account"
-          :rules="[rules.required, rules.emailRules]"
-        />
-        <v-text-field
-          v-model="password"
-          outlined
-          dark
-          color="white"
-          label="PASSWORD"
-          data-cy="password"
-          hint="At least 8 characters"
-          prepend-inner-icon="mdi-lock"
-          :rules="rules.passwordRules"
-          :type="showPassword ? 'text' : 'password'"
-        >
-          <template v-slot:append>
-            <v-icon
-              v-if="showPassword"
-              @click="showPassword = !showPassword"
-              tabindex="-1"
-              >mdi-eye</v-icon
-            >
-            <v-icon
-              v-if="!showPassword"
-              @click="showPassword = !showPassword"
-              tabindex="-1"
-              >mdi-eye-off</v-icon
-            >
-          </template>
-        </v-text-field>
-        <v-text-field
-          v-model="confirmPassword"
-          outlined
-          dark
-          color="white"
-          label="CONFIRM PASSWORD"
-          data-cy="confirmPassword"
-          hint="At least 8 characters"
-          prepend-inner-icon="mdi-lock"
-          :rules="rules.passwordMatch"
-          :type="showConfirmPassword ? 'text' : 'password'"
-        >
-          <template v-slot:append>
-            <v-icon
-              v-if="showConfirmPassword"
-              @click="showConfirmPassword = !showConfirmPassword"
-              tabindex="-1"
-              >mdi-eye</v-icon
-            >
-            <v-icon
-              v-if="!showConfirmPassword"
-              @click="showConfirmPassword = !showConfirmPassword"
-              tabindex="-1"
-              >mdi-eye-off</v-icon
-            >
-          </template>
-        </v-text-field>
-        <div class="text-center mt-6">
-          <v-btn
-            data-cy="signup"
-            type="submit"
-            class="buttons white--text font-weight-bold"
-            block
+        <template v-slot:append>
+          <v-icon
+            v-if="showPassword"
+            @click="showPassword = !showPassword"
+            tabindex="-1"
+            >mdi-eye</v-icon
           >
-            Create account
-          </v-btn>
-          <p v-if="isError" class="error--text mt-2">
-            {{ errorMessage }}
-          </p>
-        </div>
-        <div class="text-center">
-          <v-btn
-            v-show="!storeState.isAnonymous"
-            color="white"
-            class="noHover-btn white--text mt-2 font-weight-light"
-            text
-            @click="$emit('new-view', views.loginView)"
+          <v-icon
+            v-if="!showPassword"
+            @click="showPassword = !showPassword"
+            tabindex="-1"
+            >mdi-eye-off</v-icon
           >
-            back to login
-          </v-btn>
-        </div>
-      </v-form>
-    </v-card-text>
-  </v-card>
+        </template>
+      </v-text-field>
+      <v-text-field
+        v-model="confirmPassword"
+        outlined
+        dark
+        color="white"
+        label="CONFIRM PASSWORD"
+        data-cy="confirmPassword"
+        hint="At least 8 characters"
+        prepend-inner-icon="mdi-lock"
+        :rules="rules.passwordMatch"
+        :type="showConfirmPassword ? 'text' : 'password'"
+      >
+        <template v-slot:append>
+          <v-icon
+            v-if="showConfirmPassword"
+            @click="showConfirmPassword = !showConfirmPassword"
+            tabindex="-1"
+            >mdi-eye</v-icon
+          >
+          <v-icon
+            v-if="!showConfirmPassword"
+            @click="showConfirmPassword = !showConfirmPassword"
+            tabindex="-1"
+            >mdi-eye-off</v-icon
+          >
+        </template>
+      </v-text-field>
+      <div class="text-center mt-6">
+        <v-btn
+          data-cy="signup"
+          type="submit"
+          class="buttons white--text font-weight-bold"
+          block
+        >
+          Create account
+        </v-btn>
+        <p v-if="isError" class="error--text mt-2">
+          {{ errorMessage }}
+        </p>
+      </div>
+      <div class="text-center">
+        <v-btn
+          v-show="!storeState.isAnonymous"
+          color="white"
+          class="noHover-btn white--text mt-2 font-weight-light"
+          text
+          @click="$emit('new-view', views.loginView)"
+        >
+          back to login
+        </v-btn>
+      </div>
+    </v-form>
+  </v-card-text>
 </template>
 
 <script>

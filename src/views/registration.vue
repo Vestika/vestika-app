@@ -1,32 +1,25 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row justify="center" align="center">
-      <v-col xs="12" md="9" lg="9">
-        <v-card class="registerCard elevation-2">
-          <v-window v-model="currentView">
+  <v-container fill-height fluid id="registerContainer">
+    <v-row justify="center">
+      <v-col cols="9">
+        <v-card id="registerCard">
+          <v-window v-model="currentView" class="registerWindow">
+            <!--LOGIN-->
             <v-window-item :value="views.loginView">
-              <v-row align="center" justify="center">
-                <v-col xs="12" md="6" lg="6" order="0">
+              <v-row align="center">
+                <v-col>
                   <welcome-page-image></welcome-page-image>
                 </v-col>
-                <v-col
-                  xs="12"
-                  md="6"
-                  lg="6"
-                  order="1"
-                  style="border: 1px solid rgba(255, 255, 255, 0.2);"
-                >
+                <v-col class="form-card">
                   <login :views="views" @new-view="updateView"></login>
                 </v-col>
               </v-row>
             </v-window-item>
 
-            <v-window-item eager :value="views.signUpView">
-              <v-row align="center" justify="center">
-                <v-col xs="12" md="6" lg="6" order="1">
-                  <welcome-page-image></welcome-page-image>
-                </v-col>
-                <v-col xs="12" md="6" lg="6" order="0">
+            <!--SIGNUP-->
+            <v-window-item :value="views.signUpView">
+              <v-row align="center">
+                <v-col class="form-card">
                   <signup
                     :views="views"
                     :successOptions="successMessages"
@@ -35,15 +28,16 @@
                     ref="signupComponent"
                   ></signup>
                 </v-col>
+                <v-col>
+                  <welcome-page-image></welcome-page-image>
+                </v-col>
               </v-row>
             </v-window-item>
 
-            <v-window-item eager :value="views.resetPasswordView">
-              <v-row align="center" justify="center">
-                <v-col xs="12" md="6" lg="6" order="1">
-                  <welcome-page-image></welcome-page-image>
-                </v-col>
-                <v-col xs="12" md="6" lg="6" order="0">
+            <!--RESET PASS-->
+            <v-window-item :value="views.resetPasswordView">
+              <v-row align="center">
+                <v-col class="form-card">
                   <reset-password
                     :views="views"
                     :successOptions="successMessages"
@@ -51,15 +45,19 @@
                     @new-view="updateView"
                   ></reset-password>
                 </v-col>
+                <v-col>
+                  <welcome-page-image></welcome-page-image>
+                </v-col>
               </v-row>
             </v-window-item>
 
-            <v-window-item eager :value="views.verifyView">
-              <v-row align="center" justify="center">
-                <v-col xs="12" md="6" lg="6" order="0">
+            <!--VERIFY MAIL-->
+            <v-window-item :value="views.verifyView">
+              <v-row align="center">
+                <v-col>
                   <welcome-page-image></welcome-page-image>
                 </v-col>
-                <v-col xs="12" md="6" lg="6" order="1">
+                <v-col class="form-card">
                   <verify-mail
                     :views="views"
                     :successOptions="successMessages"
@@ -133,19 +131,121 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .noHover-btn:before {
   display: none;
 }
 .noHover-btn:after {
   display: none;
 }
-/* Change the white to any color */
+
+@mixin dots($count) {
+  $text-shadow: ();
+  @for $i from 0 through $count {
+    $text-shadow: $text-shadow,
+      (-0.5+ (random()) * 3) +
+        em
+        (-0.5+ (random()) * 3) +
+        em
+        8px
+        hsla(random() * 360, 100%, 50%, 0.9);
+  }
+  text-shadow: $text-shadow;
+}
+
+html {
+  background: #123;
+  overflow: hidden;
+}
+
+#registerContainer {
+  background: #123;
+  font-size: 5vmin;
+
+  position: fixed;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  margin: 15px;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+#registerCard {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 30px rgba(158, 202, 237, 0.4);
+}
+
+.form-card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#registerCard::before,
+#registerCard::after {
+  color: transparent;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 3em;
+  content: ".";
+  mix-blend-mode: screen;
+  animation: 33s -1s move infinite ease-in-out alternate;
+  z-index: -1;
+}
+
+#registerCard::before {
+  @include dots(20);
+  animation-duration: 33s;
+  animation-delay: -31s;
+}
+
+#registerCard::after {
+  @include dots(60);
+  animation-duration: 82s;
+  animation-delay: -21s;
+}
+
+@keyframes move {
+  from {
+    transform: rotate(0deg) scale(12) translateX(-20px);
+  }
+  to {
+    transform: rotate(360deg) scale(18) translateX(20px);
+  }
+}
+
+@font-face {
+  font-family: "Poiret One";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../../fonts/poiret-one-v9-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+    url("../../fonts/poiret-one-v9-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("../../fonts/poiret-one-v9-latin-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("../../fonts/poiret-one-v9-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("../../fonts/poiret-one-v9-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("../../fonts/poiret-one-v9-latin-regular.svg#PoiretOne") format("svg"); /* Legacy iOS */
+}
+
+@-webkit-keyframes autofill {
+  0%,
+  100% {
+    color: #666;
+    background: transparent;
+  }
+}
+
 input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px var(--v-registerCard-base) inset !important;
-  -webkit-text-fill-color: white !important;
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
 }
 </style>
