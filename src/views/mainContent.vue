@@ -42,7 +42,7 @@ export default {
   },
 
   created() {
-    this.eventSteam();
+    //this.eventSteam();
     this.createWebSocket();
     this.setFeatures();
 
