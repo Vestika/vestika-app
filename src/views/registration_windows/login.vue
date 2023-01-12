@@ -39,7 +39,7 @@
         <v-checkbox
           v-model="isRememberMeChecked"
           label="Remember me"
-          color="blue-grey"
+          color="#ef968e"
         />
         <v-btn
           text
@@ -54,8 +54,8 @@
       <div class="text-center mt-13">
         <v-btn
           type="submit"
+          class="login-btn"
           data-cy="signin"
-          class="buttons white--text font-weight-bold mr-2"
           block
         >
           LOGIN
@@ -145,3 +145,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.login-btn {
+  background-color: #ef968e !important;
+}
+</style>
