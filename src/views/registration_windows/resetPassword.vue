@@ -27,7 +27,7 @@
       <div class="text-center mt-3">
         <v-btn
           data-cy="resetPassword"
-          class="buttons white--text font-weight-bold"
+          class="reset-btn"
           block
           @click="resetUserPassword"
         >
@@ -100,3 +100,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.reset-btn {
+  background-color: #ef968e !important;
+}
+</style>

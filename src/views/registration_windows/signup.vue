@@ -87,7 +87,7 @@
         <v-btn
           data-cy="signup"
           type="submit"
-          class="buttons white--text font-weight-bold"
+          class="create-btn"
           block
         >
           Create account
@@ -195,3 +195,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.create-btn {
+  background-color: #ef968e !important;
+}
+</style>
