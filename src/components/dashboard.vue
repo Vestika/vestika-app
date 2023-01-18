@@ -484,7 +484,7 @@ export default {
       prefix = String.fromCharCode(0x20aa), // NIS symbol
       suffix = "",
     ) {
-      let value = "n/a";
+      let value = null;
       if (data != null) {
         value
           = prefix
