@@ -84,12 +84,7 @@
         </template>
       </v-text-field>
       <div class="text-center mt-6">
-        <v-btn
-          data-cy="signup"
-          type="submit"
-          class="create-btn"
-          block
-        >
+        <v-btn data-cy="signup" type="submit" class="create-btn" block>
           Create account
         </v-btn>
         <p v-if="isError" class="error--text mt-2">

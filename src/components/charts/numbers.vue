@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <v-skeleton-loader
-      v-show="!this.data"
+      v-show="!this.data.number"
       style="height: 100%"
       type="image"
     ></v-skeleton-loader>

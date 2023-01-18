@@ -52,12 +52,7 @@
       </v-layout>
 
       <div class="text-center mt-13">
-        <v-btn
-          type="submit"
-          class="login-btn"
-          data-cy="signin"
-          block
-        >
+        <v-btn type="submit" class="login-btn" data-cy="signin" block>
           LOGIN
         </v-btn>
         <v-btn
