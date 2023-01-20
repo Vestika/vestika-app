@@ -155,7 +155,6 @@ export default {
 
 html {
   background: #123;
-  overflow: hidden;
 }
 
 #registerContainer {
