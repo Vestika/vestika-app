@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@growthbook/growthbook": "^0.20.0",
+    "@spacebnd/vuetify-data-table-resizable-columns": "^1.0.8",
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "event-source-polyfill": "^1.0.31",
