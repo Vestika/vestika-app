@@ -193,7 +193,12 @@
 
       <template #[`item.actions`]>
         <div class="truncate">
-          <v-btn text icon @click.native.stop>
+          <v-btn
+            text
+            icon
+            @click.native.stop
+            @click="notImplementedAlertVisible ^= true"
+          >
             <v-icon>mdi-plus-circle-outline</v-icon>
           </v-btn>
           <v-btn
