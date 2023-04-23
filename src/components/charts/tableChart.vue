@@ -21,12 +21,12 @@
       <!--ADD THIS ABOVE IF YOU WANT TO TRY RESIZABLE COLUMNS-->
       <!--v-resizable-columns-->
 
-      <template v-slot:expanded-item="{ item: ParentItem }">
+      <template v-slot:expanded-item="{ item: parentItem }">
         <td :colspan="headers.length" style="padding: 0">
           <v-data-table
             id="nestedTable"
             :headers="nestedHeaders"
-            :items="ParentItem.transactions"
+            :items="parentItem.transactions"
             :sort-by="'date_at_purchase'"
             must-sort
             item-key="name"
@@ -36,38 +36,58 @@
             dense
           >
             <template #[`item.date_at_purchase`]="{ item }">
-              {{ item.date_at_purchase }}
+              <editable-text
+                :value="item.date_at_purchase"
+                @text-edit="updateValue(item, 'date_at_purchase', $event)"
+              />
             </template>
+
             <template #[`item.price_at_purchase`]="{ item }">
-              {{
-                (isNaN(ParentItem.symbol) ? "$" : "₪") +
-                  item.price_at_purchase
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }}
+              <editable-text
+                :value="item.price_at_purchase"
+                :formatter="
+                  isNaN(parentItem.symbol)
+                    ? formatPurchasePriceUSD
+                    : formatPurchasePriceILS
+                "
+                @text-edit="updateValue(item, 'price_at_purchase', $event)"
+              />
             </template>
+
             <template #[`item.units`]="{ item }">
-              {{ item.units }}
+              <editable-text
+                :value="item.units"
+                @text-edit="updateValue(item, 'units', $event)"
+              />
             </template>
+
             <template #[`item.cost`]="{ item }">
               {{
-                (isNaN(ParentItem.symbol) ? "$" : "₪") +
+                (isNaN(parentItem.symbol) ? "$" : "₪") +
                   item.cost
                     .toFixed()
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
               }}
             </template>
-            <template #[`item.actions`]>
+
+            <template #[`item.actions`]="{ item }">
               <v-btn
                 text
                 icon
-                @click.native.stop
                 @click="notImplementedAlertVisible ^= true"
                 class="invisibleButton"
               >
                 <v-icon>mdi-trash-can-outline</v-icon>
+              </v-btn>
+              <v-btn
+                text
+                icon
+                v-show="item._dirty"
+                @click="revertItem(item)"
+                class="invisibleButton"
+              >
+                <v-icon>mdi-refresh</v-icon>
               </v-btn>
             </template>
           </v-data-table>
@@ -77,17 +97,13 @@
       <template #[`header.data-table-expand`]>
         <v-btn text icon>
           <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              v-on="on"
-              v-bind="attrs"
-              @click="showManualStockDialog"
-            >
-              mdi-plus-circle-outline
-            </v-icon>
-          </template>
-          <span>Add Investment</span>
-        </v-tooltip>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon v-on="on" v-bind="attrs" @click="showManualStockDialog">
+                mdi-plus-circle-outline
+              </v-icon>
+            </template>
+            Add Investment
+          </v-tooltip>
         </v-btn>
       </template>
 
@@ -104,8 +120,7 @@
           >
             {{ item.symbol }}
           </v-btn>
-
-          <span>{{ item.name }}</span>
+          {{ item.name }}
         </div>
       </template>
 
@@ -211,7 +226,6 @@
           </v-btn>
         </div>
       </template>
-
     </v-data-table>
 
     <v-skeleton-loader v-else type="table-thead, table-tbody">
@@ -225,9 +239,13 @@
 
 <script>
 import InnerTableChart from "@/components/charts/innerTableChart.vue";
+import EditableText from "@/components/charts/editableText.vue";
 
 export default {
-  components: { InnerTableChart },
+  components: {
+    InnerTableChart,
+    EditableText,
+  },
   props: {
     data: {
       type: Array,
@@ -252,15 +270,22 @@ export default {
       dialog: false,
       expanded: [],
       nestedHeaders: [
+        // { text: "", value: "", sortable: false, width: "170" },
+        {
+          text: "",
+          value: "actions",
+          sortable: false,
+          align: "right",
+          width: "170",
+        },
+        { text: "Purchase Date", value: "date_at_purchase", width: "150" },
+        { text: "Quantity", value: "units", width: "150" },
+        { text: "Purchase Price", value: "price_at_purchase", width: "150" },
+        { text: "Value", value: "cost", width: "150" },
         { text: "", value: "", sortable: false },
-        { text: "Purchase Date", value: "date_at_purchase" },
-        { text: "Purchase Price", value: "price_at_purchase" },
-        { text: "Quantity", value: "units" },
-        { text: "Value", value: "cost" },
-        { text: "", value: "actions", sortable: false, align: "right" },
       ],
       headers: [
-        { text: "", value: "data-table-expand", align: 'center' },
+        { text: "", value: "data-table-expand", align: "center" },
         { text: "Name", value: "name" }, // width is set by `.truncate` CSS rule
         { text: "Quantity", value: "units", width: "105" },
         { text: "Price", value: "price", minWidth: "150" },
@@ -268,16 +293,67 @@ export default {
         { text: "Gain", value: "net_change", minWidth: "135" },
         { text: "Gain (%)", value: "percent_change", minWidth: "115" },
         { text: "Last " + daysBack + " days", value: "chart", sortable: false },
-        { text: "", value: "actions", sortable: false, minWidth: "150", align: "right" },
+        {
+          text: "",
+          value: "actions",
+          sortable: false,
+          minWidth: "150",
+          align: "right",
+        },
       ],
     };
   },
   methods: {
+    revertItem(item) {
+      for (const key in item._originalValues) {
+        item[key] = item._originalValues[key];
+      }
+      delete item._dirty;
+      delete item._originalValues;
+    },
     instOverTime(inst_over_time) {
       return inst_over_time.slice(-this.daysBack);
     },
     showManualStockDialog() {
       this.$emit("show-manual-stock-dialog");
+    },
+    _formatPurchasePrice(value) {
+      return parseFloat(value)
+        .toFixed(2)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    formatPurchasePriceILS(value) {
+      return "₪" + this._formatPurchasePrice(value);
+    },
+    formatPurchasePriceUSD(value) {
+      return "$" + this._formatPurchasePrice(value);
+    },
+    updateValue(item, key, newValue) {
+      // Check if the value has changed
+      if (item[key] !== newValue) {
+        item._dirty = true;
+        if (!item._originalValues) {
+          item._originalValues = {};
+        }
+        // Store the original value if it hasn't been stored already
+        if (!(key in item._originalValues)) {
+          item._originalValues[key] = item[key];
+        }
+        // Update the value
+        item[key] = newValue;
+        // Check if all values have been changed back to their original value
+        if (
+          Object.entries(item._originalValues).every(
+            ([key, value]) => item[key] === String(value),
+          )
+        ) {
+          // Clear the dirty flag and original values
+          delete item._dirty;
+          delete item._originalValues;
+        }
+        item[key] = newValue;
+      }
     },
   },
 };
@@ -288,7 +364,7 @@ export default {
   opacity: 0 !important;
 }
 
-.invisibleButton:hover {
+tr:hover > td > .invisibleButton {
   opacity: 1 !important;
 }
 
@@ -313,6 +389,10 @@ th {
   background-color: var(--v-background-base) !important;
 }
 
+.v-text-field {
+  font-size: 14px !important;
+}
+
 #mainTable td {
   font-weight: bold;
   cursor: pointer;
@@ -333,12 +413,10 @@ th {
   background: transparent;
 }
 
-
 .v-data-table,
 .v-data-table__wrapper,
 .v-skeleton-loader__table-thead,
 .v-skeleton-loader__table-tbody {
   background-color: transparent !important;
 }
-
 </style>
