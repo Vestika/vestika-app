@@ -72,14 +72,7 @@
             </template>
 
             <template #[`item.actions`]="{ item }">
-              <v-btn
-                text
-                icon
-                @click="notImplementedAlertVisible ^= true"
-                class="invisibleButton"
-              >
-                <v-icon>mdi-trash-can-outline</v-icon>
-              </v-btn>
+                <delete-button @delete-item="deleteItem(parentItem, item)" class="invisibleButton"/>
               <v-btn
                 text
                 icon
@@ -240,11 +233,14 @@
 <script>
 import InnerTableChart from "@/components/charts/innerTableChart.vue";
 import EditableText from "@/components/charts/editableText.vue";
+import deleteButton from "@/components/charts/deleteButton.vue";
+
 
 export default {
   components: {
     InnerTableChart,
     EditableText,
+    deleteButton,
   },
   props: {
     data: {
@@ -310,6 +306,9 @@ export default {
       }
       delete item._dirty;
       delete item._originalValues;
+    },
+    deleteItem(parentItem, item) {
+      parentItem.transactions.splice(parentItem.transactions.indexOf(item), 1);
     },
     instOverTime(inst_over_time) {
       return inst_over_time.slice(-this.daysBack);
