@@ -219,6 +219,20 @@
           </v-btn>
         </div>
       </template>
+
+      <template #[`header.actions`]>
+        <v-btn text icon @click="downloadJson">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon v-on="on" v-bind="attrs">
+                mdi-download
+              </v-icon>
+            </template>
+            Download Data
+          </v-tooltip>
+        </v-btn>
+      </template>
+
     </v-data-table>
 
     <v-skeleton-loader v-else type="table-thead, table-tbody">
@@ -353,6 +367,23 @@ export default {
         }
         item[key] = newValue;
       }
+    },
+        downloadJson() {
+      const timestamp = new Date().toISOString()
+        .replace(/T/, '-')
+        .replace(/\..+/, '')
+        .replace(/:/g, '-');
+
+      const fileName = `vestika-table-${timestamp}.json`;
+      const filteredData = this.data.map(({ name, symbol, transactions }) => ({ name, symbol, transactions }));
+      const dataStr = JSON.stringify(filteredData, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+      const link = document.createElement('a');
+      link.setAttribute('href', dataUri);
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
 };
