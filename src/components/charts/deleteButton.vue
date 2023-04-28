@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-model="showTooltip" top>
+  <v-tooltip v-model="showTooltip" left>
     <span>Press again to confirm</span>
     <template v-slot:activator="{ attrs }">
       <v-btn
